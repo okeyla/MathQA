@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{
+  var d=document.documentElement,
+      t=localStorage.getItem('mq-theme'),a=localStorage.getItem('mq-accent'),f=localStorage.getItem('mq-font');
+  if(t==='light'||t==='dark')d.setAttribute('data-theme',t);
+  if(['jade','teal','crimson','rose','amber','violet','ink'].indexOf(a)>=0)d.setAttribute('data-accent',a);
+  if(f==='huninn'||f==='iansui')d.setAttribute('data-font',f);
+}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MathQA 學測數學解析</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Huninn&family=Iansui&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <h1>MathQA 學測數學解析</h1>
+  <p>每天的題目一個分頁｜先自己想，再看提示，最後對解析</p>
+</header>
+
+<nav class="date-tabs" id="dateTabs" role="tablist" aria-label="日期"></nav>
+
+<main id="main">
+
+<!-- ================================================================
+     每個日期一個 <section class="day" data-date="MMDD" data-title="...">
+     新增日期時，複製一整個 section 改內容即可，分頁會自動產生。
+     ================================================================ -->
+
+<section class="day" data-date="1123" data-title="11/23 機率・空間・立體">
+  <div class="day-head">
+    <h2>11/23 題目總覽</h2>
+    <p class="muted">共 4 題（原始照片 5 張，其中停車場題出現兩次，合併成一題）。範圍：機率（轉移、餘事件）、空間坐標與球面、長方體截角與四面體。</p>
+    <div class="chips">
+      <span class="chip">113 學測 B</span><span class="chip">114 學測 B</span>
+      <span class="chip">機率</span><span class="chip">空間向量</span><span class="chip">立體幾何</span>
+    </div>
+  </div>
+
+  <div class="q-tabs" role="tablist" aria-label="題目"></div>
+
+  <!-- ---------------- Q1 ---------------- -->
+  <article class="q" data-q="Q1 機器人棋盤">
+    <div class="card">
+      <div class="q-meta"><span class="tag">多重選擇題</span><span class="tag">113 學測 B</span><span class="tag">機率・遞迴</span></div>
+      <h3>機器人在 2×2 棋盤移動</h3>
+      <div class="q-body">
+        <div>
+          <p>小明寫了一個程式讓機器人在 2×2 的棋盤中移動。每執行一次，程式會從「上、下、左、右」中等機率選一個方向，指示機器人移動一格；若選到的方向會跑出棋盤，該次就停在原地。機器人初始位置在 $A$。令執行 $n$ 次後，機器人停在 $A、B、C、D$ 的機率分別為 $a_n、b_n、c_n、d_n$。選出正確的選項。</p>
+          <ol class="opts">
+            <li>(A) $b_1=\frac14$</li>
+            <li>(B) $b_2=\frac18$</li>
+            <li>(C) $a_2+d_2=\frac34$</li>
+            <li>(D) $b_{99}=c_{99}$</li>
+            <li>(E) $a_{100}+d_{100}>\frac12$</li>
+          </ol>
+        </div>
+        <svg class="fig" viewBox="0 0 200 200" aria-label="2x2 棋盤示意">
+          <rect x="20" y="20" width="160" height="160" class="fig-line" fill="none"/>
+          <line x1="100" y1="20" x2="100" y2="180" class="fig-line"/>
+          <line x1="20" y1="100" x2="180" y2="100" class="fig-line"/>
+          <circle cx="60" cy="60" r="22" class="fig-hl"/>
+          <text x="60" y="66" class="fig-t">A</text><text x="140" y="66" class="fig-t">B</text>
+          <text x="60" y="146" class="fig-t">C</text><text x="140" y="146" class="fig-t">D</text>
+        </svg>
+      </div>
+      <details class="photo"><summary>看原題照片</summary><img loading="lazy" src="1123/IMG_9984.jpg" alt="原題照片"></details>
+    </div>
+
+    <details class="step hint"><summary>💡 提示（先想想看）</summary>
+      <p>站在任何一格（四個都是角落），四個方向裡有<strong>兩個會出界</strong>。所以每一步：停在原地 $\frac12$、往水平鄰格 $\frac14$、往垂直鄰格 $\frac14$，<strong>不可能一步走到對角</strong>。</p>
+    </details>
+
+    <details class="step"><summary>📘 完整解析</summary>
+      <h4>Step 1　寫出「一步」的規則</h4>
+      <p>以 $A$ 為例：上、左出界→留在 $A$；右→$B$；下→$C$。所以</p>
+      <p class="eq">$P(A\to A)=\tfrac12,\quad P(A\to B)=P(A\to C)=\tfrac14,\quad P(A\to D)=0$</p>
+      <p>每一格都一樣（對稱）。於是得到遞迴式，例如：</p>
+      <p class="eq">$b_{n+1}=\tfrac12 b_n+\tfrac14 a_n+\tfrac14 d_n$</p>
+
+      <h4>Step 2　算前兩步</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>$n$</th><th>$a_n$</th><th>$b_n$</th><th>$c_n$</th><th>$d_n$</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>1</td><td>$\frac12$</td><td>$\frac14$</td><td>$\frac14$</td><td>0</td></tr>
+          <tr><td>2</td><td>$\frac38$</td><td>$\frac14$</td><td>$\frac14$</td><td>$\frac18$</td></tr>
+        </tbody>
+      </table></div>
+      <p>$a_2=\frac12\cdot\frac12+\frac14\cdot\frac14+\frac14\cdot\frac14=\frac38$；$b_2=\frac12\cdot\frac14+\frac14\cdot\frac12+\frac14\cdot0=\frac14$；$d_2=\frac14\cdot\frac14+\frac14\cdot\frac14=\frac18$。</p>
+
+      <h4>Step 3　逐一判斷</h4>
+      <ul class="verdict">
+        <li class="ok">(A) $b_1=\frac14$ ✔　第一步往右就到 $B$。</li>
+        <li class="bad">(B) ✘　$b_2=\frac14$，不是 $\frac18$。</li>
+        <li class="bad">(C) ✘　$a_2+d_2=\frac38+\frac18=\frac12$。</li>
+        <li class="ok">(D) ✔　棋盤沿對角線 $AD$ 對稱，$B$、$C$ 地位完全相同，所以任何 $n$ 都有 $b_n=c_n$。</li>
+        <li class="bad">(E) ✘　見下方「關鍵觀察」，$a_n+d_n$ 永遠等於 $\frac12$（$n\ge1$），不會大於。</li>
+      </ul>
+
+      <h4>關鍵觀察：把格子分成兩組</h4>
+      <p>令 $s_n=a_n+d_n$（對角組 $\{A,D\}$），$t_n=b_n+c_n$（另一組 $\{B,C\}$）。從 $A$ 出發：留在原地 $\frac12$（還在 $\{A,D\}$），走到 $B$ 或 $C$ 共 $\frac12$。從 $B$ 出發也一樣：$\frac12$ 留在本組、$\frac12$ 換組。所以</p>
+      <p class="eq">$s_{n+1}=\tfrac12 s_n+\tfrac12 t_n=\tfrac12(s_n+t_n)=\tfrac12$</p>
+      <p>不管 $n$ 多大，只要 $n\ge1$，$a_n+d_n=\frac12$。這一招在選項 (C)、(E) 都能秒殺。</p>
+
+      <div class="answer">答案：(A)(D)</div>
+    </details>
+
+    <details class="step"><summary>🧪 動手算：前幾步的機率表</summary>
+      <p class="muted">調整步數，看 $a_n+d_n$ 是不是一直是 $0.5$，以及 $b_n$ 是否等於 $c_n$。</p>
+      <label class="range">步數 $n$：<input type="range" min="0" max="12" value="5" id="robotN"> <b id="robotNv">5</b></label>
+      <div class="tbl-wrap"><table id="robotTbl"></table></div>
+    </details>
+
+    <div class="tip"><b>考點與陷阱</b>：「出界就停在原地」的題目，先數每格有幾個方向會出界。2×2 每格都是角落，所以留在原地的機率是 $\frac12$。遇到 $n=99、100$ 這種大數字，不要硬算，找<strong>對稱性</strong>或<strong>守恆量</strong>。</div>
+  </article>
+
+  <!-- ---------------- Q2 ---------------- -->
+  <article class="q" data-q="Q2 停車場">
+    <div class="card">
+      <div class="q-meta"><span class="tag">填充題</span><span class="tag">114 學測 B</span><span class="tag">獨立事件・餘事件</span></div>
+      <h3>兩個停車場至少一個有空位</h3>
+      <p>某景點旁邊有兩個停車場，假設某日任一停車場沒有空位的機率皆為 $0.7$，且兩個停車場是否有空位互不影響。若一輛車子在當天來到這兩個停車場外面，則至少有一個停車場內有空位的機率為＿＿＿＿。</p>
+      <p class="muted small">（講義中這題出現兩次：第 2 題與第 4 題，內容相同。）</p>
+      <details class="photo"><summary>看原題照片（兩張）</summary>
+        <img loading="lazy" src="1123/IMG_9985.jpg" alt="原題照片 第2題">
+        <img loading="lazy" src="1123/IMG_9986.jpg" alt="原題照片 第4題">
+      </details>
+    </div>
+
+    <details class="step hint"><summary>💡 提示（先想想看）</summary>
+      <p>看到「<strong>至少一個</strong>」，先想反面：「至少一個有空位」的反面是什麼？</p>
+    </details>
+
+    <details class="step"><summary>📘 完整解析</summary>
+      <h4>Step 1　找反面（餘事件）</h4>
+      <p>「至少一個有空位」的反面＝「<strong>兩個都沒有空位</strong>」。</p>
+      <h4>Step 2　獨立事件相乘</h4>
+      <p class="eq">$P(\text{兩個都滿})=0.7\times0.7=0.49$</p>
+      <h4>Step 3　用 1 減掉</h4>
+      <p class="eq">$P(\text{至少一個有空位})=1-0.49=0.51$</p>
+
+      <h4>另解（正面硬算，驗算用）</h4>
+      <p>有空位的機率是 $0.3$。分三種情況：只有第一個有 $0.3\times0.7$、只有第二個有 $0.7\times0.3$、兩個都有 $0.3\times0.3$：</p>
+      <p class="eq">$0.21+0.21+0.09=0.51$</p>
+      <div class="answer">答案：$0.51$</div>
+    </details>
+
+    <div class="tip"><b>考點與陷阱</b>：常見錯誤是寫成 $0.3+0.3=0.6$（把兩個都有空位的情況算兩次）。看到「至少」就用 $1-P(\text{全部都不})$，最快也最不會錯。</div>
+  </article>
+
+  <!-- ---------------- Q3 ---------------- -->
+  <article class="q" data-q="Q3 地球儀劣弧">
+    <div class="card">
+      <div class="q-meta"><span class="tag">填充題</span><span class="tag">113 學測 B</span><span class="tag">空間坐標・球面距離</span></div>
+      <h3>地球儀上的大圓劣弧長</h3>
+      <p>在空間坐標系中，有一球心在 $O(0,0,0)$ 且北極點在 $N(0,0,2)$ 的地球儀。已知球面上點 $A$ 坐標為 $\left(\frac{\sqrt3}{2},\frac12,\sqrt3\right)$，赤道上距離點 $A$ 最遠的點為點 $P$，則在通過點 $A$、點 $P$ 的大圓上這兩點的劣弧長為＿＿＿＿。</p>
+      <details class="photo"><summary>看原題照片</summary><img loading="lazy" src="1123/IMG_9987.jpg" alt="原題照片"></details>
+    </div>
+
+    <details class="step hint"><summary>💡 提示（先想想看）</summary>
+      <p>① 半徑是多少？② 赤道是 $z=0$ 的圓，$A$ 的「經度方向」是 $(\frac{\sqrt3}{2},\frac12)$，赤道上離 $A$ 最遠的點應該在哪個方向？③ 弧長＝半徑 × 圓心角（弧度）。</p>
+    </details>
+
+    <details class="step"><summary>📘 完整解析</summary>
+      <h4>Step 1　半徑與確認 $A$ 在球面上</h4>
+      <p>$ON=2$，所以半徑 $r=2$。檢查 $|OA|^2=\frac34+\frac14+3=4$ ✔。</p>
+
+      <h4>Step 2　找 $P$</h4>
+      <p>赤道上的點寫成 $P=(2\cos\theta,\,2\sin\theta,\,0)$。</p>
+      <p class="eq">$|AP|^2=|OA|^2+|OP|^2-2\,\vec{OA}\cdot\vec{OP}=8-2\left(\sqrt3\cos\theta+\sin\theta\right)$</p>
+      <p>要 $|AP|$ 最大，就要 $\sqrt3\cos\theta+\sin\theta=2\cos(\theta-30^\circ)$ 最小，也就是 $\theta=210^\circ$：</p>
+      <p class="eq">$P=(-\sqrt3,\,-1,\,0)$</p>
+      <p>直覺：$A$ 在水平面的投影方向是 $30^\circ$，赤道上最遠的點就在<strong>正對面</strong> $210^\circ$。</p>
+
+      <h4>Step 3　求圓心角 $\angle AOP$</h4>
+      <p class="eq">$\cos\angle AOP=\dfrac{\vec{OA}\cdot\vec{OP}}{|OA||OP|}=\dfrac{-\frac32-\frac12+0}{2\times2}=-\dfrac12\ \Rightarrow\ \angle AOP=120^\circ=\dfrac{2\pi}{3}$</p>
+
+      <h4>Step 4　弧長</h4>
+      <p class="eq">$\text{劣弧長}=r\theta=2\times\dfrac{2\pi}{3}=\dfrac{4\pi}{3}$</p>
+
+      <div class="body-fig">
+        <svg class="fig" viewBox="0 0 300 260" aria-label="經過 N、A、P 的大圓剖面">
+          <circle cx="150" cy="140" r="110" class="fig-line" fill="none"/>
+          <line x1="30" y1="140" x2="270" y2="140" class="fig-dash"/>
+          <path d="M205,44.7 A110,110 0 0 0 40,140" class="fig-arc"/>
+          <line x1="150" y1="140" x2="205" y2="44.7" class="fig-line"/>
+          <line x1="150" y1="140" x2="40" y2="140" class="fig-line"/>
+          <line x1="150" y1="140" x2="150" y2="30" class="fig-dash"/>
+          <circle cx="150" cy="140" r="3" class="fig-dot"/>
+          <circle cx="205" cy="44.7" r="4" class="fig-dot"/>
+          <circle cx="40" cy="140" r="4" class="fig-dot"/>
+          <circle cx="150" cy="30" r="4" class="fig-dot"/>
+          <text x="155" y="158" class="fig-s">O</text>
+          <text x="214" y="42" class="fig-s">A（北緯60°）</text>
+          <text x="10" y="132" class="fig-s">P</text>
+          <text x="140" y="22" class="fig-s">N</text>
+          <text x="232" y="134" class="fig-s muted-t">赤道</text>
+          <text x="98" y="118" class="fig-s acc-t">120°</text>
+        </svg>
+        <p class="muted small">剖面圖：$N$、$A$、$P$、$O$ 落在同一個大圓上（同一條經線所在的平面）。</p>
+      </div>
+
+      <h4>更快的想法：用經緯度</h4>
+      <p>$A$ 的 $z=\sqrt3=2\sin60^\circ$，所以 $A$ 在<strong>北緯 60°</strong>。$P$ 在赤道、經度差 $180^\circ$。從 $A$ 往北到北極 $N$ 是 $30^\circ$，再從 $N$ 往南到 $P$ 是 $90^\circ$，總共 $120^\circ$，同樣得到 $\frac{4\pi}{3}$。</p>
+      <div class="answer">答案：$\dfrac{4\pi}{3}$</div>
+    </details>
+
+    <div class="tip"><b>考點與陷阱</b>：球面上兩點的最短距離是<strong>大圓劣弧</strong>，不是直線距離 $|AP|$。弧長公式 $r\theta$ 的 $\theta$ 一定要用<strong>弧度</strong>。</div>
+  </article>
+
+  <!-- ---------------- Q4 ---------------- -->
+  <article class="q" data-q="Q4 石塊截角">
+    <div class="card">
+      <div class="q-meta"><span class="tag">混合題</span><span class="tag">113 學測 B</span><span class="tag">立體幾何・四面體體積</span></div>
+      <h3>長方體石塊截去八個角</h3>
+      <p>如圖，考慮長方體石塊上某一頂點 $A$ 及包含 $A$ 的一個面，令這個面的各邊中點為 $B、E、F、D$。此長方體上包含 $B$ 的另一個面，令其各邊中點為 $B、C、H、G$。已知 $\overline{BC}=8$，$\overline{BD}=\overline{DC}=9$。現將石塊截去八個角，使每個截角的截面恰通過該截角之三鄰邊的中點。</p>
+      <ol class="opts">
+        <li>(1) 截角後的石塊為幾面體？（單選）(A) 八面體 (B) 十面體 (C) 十二面體 (D) 十四面體 (E) 十六面體</li>
+        <li>(2) 試求 $\triangle BCD$ 的面積。</li>
+        <li>(3) 試求 $\overline{AD}$ 的長度與四面體 $ABCD$ 的體積，並求此四面體以 $\triangle BCD$ 為底面時，頂點 $A$ 到底面的高。（角錐體積 $=\frac{\text{底面積}\times\text{高}}{3}$）</li>
+      </ol>
+      <details class="photo"><summary>看原題照片（含原圖）</summary><img loading="lazy" src="1123/IMG_9988.jpg" alt="原題照片"></details>
+    </div>
+
+    <details class="step hint"><summary>💡 提示（先想想看）</summary>
+      <p>$B、C、D$ 正好是從頂點 $A$ 出發的<strong>三條稜的中點</strong>。長方體的三條稜兩兩垂直，所以 $AB、AC、AD$ 兩兩垂直──四面體 $ABCD$ 是一個「直角角落」。</p>
+    </details>
+
+    <details class="step"><summary>📘 (1) 幾面體</summary>
+      <p>原本長方體有 <strong>6 個面</strong>。每截掉一個角，多出一個三角形截面，8 個角就多 <strong>8 個面</strong>。因為截面都通過中點，原本每個面剩下一個由四邊中點連成的菱形，仍然是一個面，不會消失。</p>
+      <p class="eq">$6+8=14$</p>
+      <div class="answer">答案：(D) 十四面體</div>
+    </details>
+
+    <details class="step"><summary>📘 (2) $\triangle BCD$ 面積</summary>
+      <p>$\triangle BCD$ 三邊 $8、9、9$，是等腰三角形。從 $D$ 作 $BC$ 的垂線，垂足是 $BC$ 中點：</p>
+      <p class="eq">$\text{高}=\sqrt{9^2-4^2}=\sqrt{65},\qquad \text{面積}=\dfrac12\times8\times\sqrt{65}=4\sqrt{65}$</p>
+      <div class="answer">答案：$4\sqrt{65}$</div>
+    </details>
+
+    <details class="step"><summary>📘 (3) $\overline{AD}$、體積、高</summary>
+      <div class="body-fig">
+        <svg class="fig" viewBox="0 0 320 230" aria-label="直角四面體 ABCD">
+          <polygon points="60,150 170,205 270,140" class="fig-face"/>
+          <line x1="170" y1="40" x2="60" y2="150" class="fig-line"/>
+          <line x1="170" y1="40" x2="170" y2="205" class="fig-line"/>
+          <line x1="170" y1="40" x2="270" y2="140" class="fig-line"/>
+          <line x1="60" y1="150" x2="170" y2="205" class="fig-line"/>
+          <line x1="170" y1="205" x2="270" y2="140" class="fig-line"/>
+          <line x1="60" y1="150" x2="270" y2="140" class="fig-dash"/>
+          <text x="164" y="30" class="fig-s">A</text>
+          <text x="40" y="156" class="fig-s">D</text>
+          <text x="164" y="224" class="fig-s">B</text>
+          <text x="278" y="146" class="fig-s">C</text>
+          <text x="92" y="92" class="fig-s acc-t">r</text>
+          <text x="176" y="128" class="fig-s acc-t">p</text>
+          <text x="226" y="84" class="fig-s acc-t">q</text>
+          <text x="98" y="192" class="fig-s">9</text>
+          <text x="226" y="186" class="fig-s">8</text>
+          <text x="160" y="140" class="fig-s">9</text>
+        </svg>
+        <p class="muted small">$AB=p$、$AC=q$、$AD=r$ 兩兩垂直；底面 $\triangle BCD$ 三邊 $8、9、9$。</p>
+      </div>
+
+      <h4>Step 1　用畢氏定理列三式</h4>
+      <p class="eq">$\begin{cases}p^2+q^2=BC^2=64\\ p^2+r^2=BD^2=81\\ q^2+r^2=DC^2=81\end{cases}$</p>
+      <p>後兩式相減得 $p=q$，代回第一式 $p^2=q^2=32$，$p=q=4\sqrt2$；再得 $r^2=81-32=49$，$r=7$。</p>
+      <p class="eq">$\overline{AD}=7$</p>
+
+      <h4>Step 2　體積（以直角三角形 $ABC$ 為底、$AD$ 為高）</h4>
+      <p class="eq">$V=\dfrac13\times\left(\dfrac12\times4\sqrt2\times4\sqrt2\right)\times7=\dfrac13\times16\times7=\dfrac{112}{3}$</p>
+
+      <h4>Step 3　換底求高</h4>
+      <p>同一個四面體，換成以 $\triangle BCD$ 為底，體積不變：</p>
+      <p class="eq">$\dfrac13\times4\sqrt{65}\times h=\dfrac{112}{3}\ \Rightarrow\ h=\dfrac{28}{\sqrt{65}}=\dfrac{28\sqrt{65}}{65}$</p>
+
+      <h4>驗算小技巧（直角四面體公式）</h4>
+      <p>直角頂點到斜面的高滿足 $\dfrac1{h^2}=\dfrac1{p^2}+\dfrac1{q^2}+\dfrac1{r^2}=\dfrac1{32}+\dfrac1{32}+\dfrac1{49}=\dfrac{65}{784}$，所以 $h=\dfrac{28}{\sqrt{65}}$ ✔。這是平面上「直角三角形斜邊上的高」公式的立體版。</p>
+      <div class="answer">答案：$\overline{AD}=7$，體積 $\dfrac{112}{3}$，高 $\dfrac{28\sqrt{65}}{65}$</div>
+    </details>
+
+    <div class="tip"><b>考點與陷阱</b>：關鍵是看出 $B、C、D$ 是同一頂點三條稜的中點，所以 $AB\perp AC\perp AD$。求「點到平面的距離」時，<strong>體積換底</strong>幾乎是學測最常用的方法，比找垂足快很多。</div>
+  </article>
+</section>
+
+</main>
+
+<!-- 右下角切換按鈕 -->
+<div class="fab-wrap">
+  <div class="fab-item">
+    <div class="panel" id="panelTheme" hidden>
+      <div class="panel-title">明暗模式</div>
+      <div class="opt-list" id="themeOpts"></div>
+      <div class="panel-title">主題色</div>
+      <div class="opt-list two" id="accentOpts"></div>
+    </div>
+    <button class="fab" data-panel="panelTheme" aria-expanded="false"><span class="ic">🎨</span><span class="lb">配色</span></button>
+  </div>
+  <div class="fab-item">
+    <div class="panel" id="panelFont" hidden>
+      <div class="panel-title">字型</div>
+      <div class="opt-list" id="fontOpts"></div>
+    </div>
+    <button class="fab" data-panel="panelFont" aria-expanded="false"><span class="ic">Aa</span><span class="lb">字型</span></button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
