@@ -150,6 +150,13 @@ tr.hl td{background:var(--accent-soft)}
 .fig-t{fill:var(--text);font-size:28px;text-anchor:middle;font-style:italic;font-weight:700}
 .fig-s{fill:var(--text);font-size:15px;font-weight:700}
 .acc-t{fill:var(--accent)}
+.bad-t{fill:var(--bad)}
+.ar-ok{stroke:var(--accent);stroke-width:3;fill:none}
+.ar-bad{stroke:var(--bad);stroke-width:3;stroke-dasharray:6 4;fill:none}
+.mk-acc{fill:var(--accent)}
+.mk-bad{fill:var(--bad)}
+table.paths th,table.paths td{white-space:nowrap;padding:6px 10px}
+table.paths td:nth-child(2){text-align:left}
 .muted-t{fill:var(--muted)}
 
 /* ===== 右下角切換 ===== */

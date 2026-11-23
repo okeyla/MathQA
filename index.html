@@ -52,7 +52,7 @@
   <!-- ---------------- Q1 ---------------- -->
   <article class="q" data-q="Q1 機器人棋盤">
     <div class="card">
-      <div class="q-meta"><span class="tag">多重選擇題</span><span class="tag">113 學測 B</span><span class="tag">機率・遞迴</span></div>
+      <div class="q-meta"><span class="tag">多重選擇題</span><span class="tag">113 學測 B</span><span class="tag">機率・樹狀圖</span></div>
       <h3>機器人在 2×2 棋盤移動</h3>
       <div class="q-body">
         <div>
@@ -78,51 +78,115 @@
     </div>
 
     <details class="step hint"><summary>💡 提示（先想想看）</summary>
-      <p>站在任何一格（四個都是角落），四個方向裡有<strong>兩個會出界</strong>。所以每一步：停在原地 $\frac12$、往水平鄰格 $\frac14$、往垂直鄰格 $\frac14$，<strong>不可能一步走到對角</strong>。</p>
+      <p>先別管 $a_n、b_n$ 這些符號。站在 $A$，把「上、下、左、右」四個方向<strong>各畫一支箭頭、各標 $\frac14$</strong>，看看每支箭頭最後讓機器人停在哪一格。</p>
     </details>
 
     <details class="step"><summary>📘 完整解析</summary>
-      <h4>Step 1　寫出「一步」的規則</h4>
-      <p>以 $A$ 為例：上、左出界→留在 $A$；右→$B$；下→$C$。所以</p>
-      <p class="eq">$P(A\to A)=\tfrac12,\quad P(A\to B)=P(A\to C)=\tfrac14,\quad P(A\to D)=0$</p>
-      <p>每一格都一樣（對稱）。於是得到遞迴式，例如：</p>
-      <p class="eq">$b_{n+1}=\tfrac12 b_n+\tfrac14 a_n+\tfrac14 d_n$</p>
 
-      <h4>Step 2　算前兩步</h4>
+      <h4>Step 1　看懂「走一步」：四支箭頭，各 $\frac14$</h4>
+      <p>機器人在 $A$ 時，四個方向<strong>每個都是 $\frac14$</strong>：</p>
+      <div class="body-fig">
+        <svg class="fig" viewBox="0 0 320 250" aria-label="從 A 出發的四個方向，各四分之一">
+          <defs>
+            <marker id="arOk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mk-acc"/></marker>
+            <marker id="arBad" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mk-bad"/></marker>
+          </defs>
+          <rect x="90" y="50" width="160" height="160" class="fig-line"/>
+          <line x1="170" y1="50" x2="170" y2="210" class="fig-line"/>
+          <line x1="90" y1="130" x2="250" y2="130" class="fig-line"/>
+          <text x="104" y="74" class="fig-s">A</text><text x="184" y="74" class="fig-s">B</text>
+          <text x="104" y="154" class="fig-s">C</text><text x="184" y="154" class="fig-s">D</text>
+          <!-- 右、下：真的移動 -->
+          <line x1="136" y1="95" x2="200" y2="95" class="ar-ok" marker-end="url(#arOk)"/>
+          <text x="206" y="100" class="fig-s acc-t">右 ¼</text>
+          <line x1="128" y1="103" x2="128" y2="168" class="ar-ok" marker-end="url(#arOk)"/>
+          <text x="137" y="190" class="fig-s acc-t">下 ¼</text>
+          <!-- 上、左：出界 -->
+          <line x1="128" y1="87" x2="128" y2="22" class="ar-bad" marker-end="url(#arBad)"/>
+          <text x="137" y="30" class="fig-s bad-t">上 ¼ 出界</text>
+          <line x1="120" y1="95" x2="40" y2="95" class="ar-bad" marker-end="url(#arBad)"/>
+          <text x="60" y="84" class="fig-s bad-t" text-anchor="middle">左 ¼</text>
+          <text x="60" y="118" class="fig-s bad-t" text-anchor="middle">出界</text>
+          <circle cx="128" cy="95" r="6" class="fig-dot"/>
+        </svg>
+      </div>
       <div class="tbl-wrap"><table>
-        <thead><tr><th>$n$</th><th>$a_n$</th><th>$b_n$</th><th>$c_n$</th><th>$d_n$</th></tr></thead>
+        <thead><tr><th>選到的方向</th><th>機率</th><th>結果</th></tr></thead>
         <tbody>
-          <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
-          <tr><td>1</td><td>$\frac12$</td><td>$\frac14$</td><td>$\frac14$</td><td>0</td></tr>
-          <tr><td>2</td><td>$\frac38$</td><td>$\frac14$</td><td>$\frac14$</td><td>$\frac18$</td></tr>
+          <tr><td>上</td><td>$\frac14$</td><td>出界 → <b>留在 $A$</b></td></tr>
+          <tr><td>左</td><td>$\frac14$</td><td>出界 → <b>留在 $A$</b></td></tr>
+          <tr><td>右</td><td>$\frac14$</td><td>走到 $B$</td></tr>
+          <tr><td>下</td><td>$\frac14$</td><td>走到 $C$</td></tr>
         </tbody>
       </table></div>
-      <p>$a_2=\frac12\cdot\frac12+\frac14\cdot\frac14+\frac14\cdot\frac14=\frac38$；$b_2=\frac12\cdot\frac14+\frac14\cdot\frac12+\frac14\cdot0=\frac14$；$d_2=\frac14\cdot\frac14+\frac14\cdot\frac14=\frac18$。</p>
+      <p>所以「上」和「左」這兩支 $\frac14$ 加起來，<strong>留在原地的機率是 $\frac14+\frac14=\frac12$</strong>。</p>
+      <p class="eq">走一步：留在原地 $\frac12$　｜　往橫向鄰格 $\frac14$　｜　往直向鄰格 $\frac14$　｜　斜對角 $0$</p>
+      <p>棋盤只有 4 格，<strong>每一格都是角落</strong>，所以不管機器人在哪一格，規則都一樣：兩個方向會出界、兩個方向可以走。例如在 $B$：上、右出界（留在 $B$ 共 $\frac12$），左到 $A$ $\frac14$，下到 $D$ $\frac14$。</p>
 
-      <h4>Step 3　逐一判斷</h4>
+      <h4>Step 2　選項 (A)：走 1 步</h4>
+      <p>從 $A$ 走一步到 $B$，只有「選到右」這一種，機率 $\frac14$。</p>
+      <ul class="verdict"><li class="ok">(A) $b_1=\frac14$ ✔</li></ul>
+      <p class="muted small">順便記下第 1 步後的位置：$A$ 是 $\frac12$、$B$ 是 $\frac14$、$C$ 是 $\frac14$、$D$ 是 $0$（一步走不到斜對角）。</p>
+
+      <h4>Step 3　選項 (B)(C)：走 2 步，把路線一條一條列出來</h4>
+      <p>走兩步的機率＝<strong>第一步的機率 × 第二步的機率</strong>，同一個終點的路線再相加。</p>
+      <div class="tbl-wrap"><table class="paths">
+        <thead><tr><th>終點</th><th>路線</th><th>機率</th><th>合計</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3">$A$</td><td>$A\to A\to A$（留、留）</td><td>$\frac12\times\frac12=\frac14$</td><td rowspan="3"><b>$a_2=\frac38$</b></td></tr>
+          <tr><td>$A\to B\to A$（右、左）</td><td>$\frac14\times\frac14=\frac1{16}$</td></tr>
+          <tr><td>$A\to C\to A$（下、上）</td><td>$\frac14\times\frac14=\frac1{16}$</td></tr>
+          <tr><td rowspan="2">$B$</td><td>$A\to A\to B$（留、右）</td><td>$\frac12\times\frac14=\frac18$</td><td rowspan="2"><b>$b_2=\frac14$</b></td></tr>
+          <tr><td>$A\to B\to B$（右、留）</td><td>$\frac14\times\frac12=\frac18$</td></tr>
+          <tr><td rowspan="2">$C$</td><td>$A\to A\to C$（留、下）</td><td>$\frac12\times\frac14=\frac18$</td><td rowspan="2"><b>$c_2=\frac14$</b></td></tr>
+          <tr><td>$A\to C\to C$（下、留）</td><td>$\frac14\times\frac12=\frac18$</td></tr>
+          <tr><td rowspan="2">$D$</td><td>$A\to B\to D$（右、下）</td><td>$\frac14\times\frac14=\frac1{16}$</td><td rowspan="2"><b>$d_2=\frac18$</b></td></tr>
+          <tr><td>$A\to C\to D$（下、右）</td><td>$\frac14\times\frac14=\frac1{16}$</td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted small">檢查：$\frac38+\frac14+\frac14+\frac18=1$ ✔（四格機率加起來一定是 1）</p>
+      <p>常見錯誤：只算到「$A\to A\to B$」這一條，得到 $\frac18$，就會誤選 (B)。<strong>記得「先留原地再走」和「先走再留原地」是兩條不同路線</strong>。</p>
       <ul class="verdict">
-        <li class="ok">(A) $b_1=\frac14$ ✔　第一步往右就到 $B$。</li>
-        <li class="bad">(B) ✘　$b_2=\frac14$，不是 $\frac18$。</li>
-        <li class="bad">(C) ✘　$a_2+d_2=\frac38+\frac18=\frac12$。</li>
-        <li class="ok">(D) ✔　棋盤沿對角線 $AD$ 對稱，$B$、$C$ 地位完全相同，所以任何 $n$ 都有 $b_n=c_n$。</li>
-        <li class="bad">(E) ✘　見下方「關鍵觀察」，$a_n+d_n$ 永遠等於 $\frac12$（$n\ge1$），不會大於。</li>
+        <li class="bad">(B) ✘　$b_2=\frac18+\frac18=\frac14$，不是 $\frac18$。</li>
+        <li class="bad">(C) ✘　$a_2+d_2=\frac38+\frac18=\frac12$，不是 $\frac34$。</li>
       </ul>
 
-      <h4>關鍵觀察：把格子分成兩組</h4>
-      <p>令 $s_n=a_n+d_n$（對角組 $\{A,D\}$），$t_n=b_n+c_n$（另一組 $\{B,C\}$）。從 $A$ 出發：留在原地 $\frac12$（還在 $\{A,D\}$），走到 $B$ 或 $C$ 共 $\frac12$。從 $B$ 出發也一樣：$\frac12$ 留在本組、$\frac12$ 換組。所以</p>
-      <p class="eq">$s_{n+1}=\tfrac12 s_n+\tfrac12 t_n=\tfrac12(s_n+t_n)=\tfrac12$</p>
-      <p>不管 $n$ 多大，只要 $n\ge1$，$a_n+d_n=\frac12$。這一招在選項 (C)、(E) 都能秒殺。</p>
+      <h4>Step 4　選項 (D)：$B$ 和 $C$ 是「鏡子兩邊」</h4>
+      <p>沿著 $A$–$D$ 這條對角線把棋盤對折，$B$ 剛好疊到 $C$。而且「右」和「下」機率一樣都是 $\frac14$，所以每一條走到 $B$ 的路線，對折後都有一條<strong>機率完全一樣</strong>的路線走到 $C$（上面表格裡 $B$、$C$ 兩列就是這樣一一對應）。不管走幾步都一樣：</p>
+      <ul class="verdict"><li class="ok">(D) $b_{99}=c_{99}$ ✔</li></ul>
+
+      <h4>Step 5　選項 (E)：用「塗顏色」看穿</h4>
+      <div class="body-fig">
+        <svg class="fig" viewBox="0 0 200 200" style="max-width:180px" aria-label="A、D 塗色，B、C 空白">
+          <rect x="20" y="20" width="80" height="80" class="fig-face"/>
+          <rect x="100" y="100" width="80" height="80" class="fig-face"/>
+          <rect x="20" y="20" width="160" height="160" class="fig-line"/>
+          <line x1="100" y1="20" x2="100" y2="180" class="fig-line"/>
+          <line x1="20" y1="100" x2="180" y2="100" class="fig-line"/>
+          <text x="60" y="68" class="fig-t">A</text><text x="140" y="68" class="fig-t">B</text>
+          <text x="60" y="148" class="fig-t">C</text><text x="140" y="148" class="fig-t">D</text>
+        </svg>
+      </div>
+      <p>把 $A$、$D$ <strong>塗上顏色</strong>，$B$、$C$ <strong>留空白</strong>（像西洋棋盤）。觀察每走一步：</p>
+      <ul>
+        <li>出界（2 個方向，共 $\frac12$）→ 留在原地 → <strong>顏色不變</strong></li>
+        <li>真的移動（2 個方向，共 $\frac12$）→ 一定走到隔壁格，隔壁格一定是<strong>另一種顏色</strong></li>
+      </ul>
+      <p>所以每走一步，就像丟一次硬幣：<strong>一半機率變色、一半機率不變</strong>。不管上一步在哪裡，走完之後在塗色格（$A$ 或 $D$）的機率都是 $\frac12$：</p>
+      <p class="eq">$a_n+d_n=\frac12\quad(n\ge1)$</p>
+      <p>這跟 Step 3 算出的 $a_2+d_2=\frac12$ 一致，也能順便秒殺 (C)。</p>
+      <ul class="verdict"><li class="bad">(E) ✘　$a_{100}+d_{100}$ 剛好等於 $\frac12$，不會「大於」$\frac12$。</li></ul>
 
       <div class="answer">答案：(A)(D)</div>
     </details>
 
     <details class="step"><summary>🧪 動手算：前幾步的機率表</summary>
-      <p class="muted">調整步數，看 $a_n+d_n$ 是不是一直是 $0.5$，以及 $b_n$ 是否等於 $c_n$。</p>
+      <p class="muted">拉動步數看看：$b_n$ 是不是永遠等於 $c_n$？$a_n+d_n$ 是不是一直是 $\frac12$？</p>
       <label class="range">步數 $n$：<input type="range" min="0" max="12" value="5" id="robotN"> <b id="robotNv">5</b></label>
       <div class="tbl-wrap"><table id="robotTbl"></table></div>
     </details>
 
-    <div class="tip"><b>考點與陷阱</b>：「出界就停在原地」的題目，先數每格有幾個方向會出界。2×2 每格都是角落，所以留在原地的機率是 $\frac12$。遇到 $n=99、100$ 這種大數字，不要硬算，找<strong>對稱性</strong>或<strong>守恆量</strong>。</div>
+    <div class="tip"><b>考點與陷阱</b>：① 「出界就停在原地」的題目，先在格子上畫四支箭頭、每支標 $\frac14$，出界的箭頭都算「留在原地」。② 走兩步以上就<strong>列路線、相乘再相加</strong>，別漏掉「先停再走」的路線。③ 看到 $n=99、100$ 這種大數字，不要硬算，找<strong>對稱</strong>（對折）或<strong>塗色</strong>這類規律。</div>
   </article>
 
   <!-- ---------------- Q2 ---------------- -->
