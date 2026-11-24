@@ -83,6 +83,120 @@
     rN.addEventListener('input',draw);draw();
   }
 
+
+  /* ===== 11/24 小圖：三次函數草圖 ===== */
+  var miniFns={
+    two:{f:function(x){return x*x*x-3*x},x0:-2.2,x1:2.2,sx:34,sy:12,cx:80,cy:60},
+    flat:{f:function(x){return x*x*x},x0:-1.6,x1:1.6,sx:45,sy:12,cx:80,cy:60},
+    mono:{f:function(x){return x*x*x+x},x0:-1.4,x1:1.4,sx:52,sy:12,cx:80,cy:60},
+    hike:{f:function(x){return x*x*x-3*x},x0:-2.15,x1:2.15,sx:62,sy:18,cx:150,cy:100},
+    x3m3x:{f:function(x){return x*x*x-3*x},x0:-2.25,x1:2.25,sx:60,sy:20,cx:150,cy:110}
+  };
+  document.querySelectorAll('[data-fn]').forEach(function(el){
+    var cfg=miniFns[el.dataset.fn];if(!cfg)return;
+    var line=el.tagName.toLowerCase()==='polyline'?el:el.querySelector('polyline');
+    var pts=[];
+    for(var i=0;i<=80;i++){var x=cfg.x0+(cfg.x1-cfg.x0)*i/80;pts.push((cfg.cx+cfg.sx*x).toFixed(1)+','+(cfg.cy-cfg.sy*cfg.f(x)).toFixed(1));}
+    line.setAttribute('points',pts.join(' '));
+  });
+
+  /* ===== 11/24 互動：三次函數 ===== */
+  var cv=document.getElementById('cubicCv');
+  if(cv){
+    var ids=['A','B','C','D'],inp={};
+    ids.forEach(function(k){inp[k]=document.getElementById('cb'+k)});
+    var showD=document.getElementById('cbShowD'),info=document.getElementById('cbInfo');
+    var X0=-5,X1=5,Y0=-12,Y1=12;
+    var num=function(v){v=Math.round(v*100)/100;if(v===0)v=0;return (v<0?'−':'')+Math.abs(v)};
+    var poly=function(cs,pw){ // 係數由高次到低次
+      var s='',sup=['','','²','³'];
+      cs.forEach(function(c,i){
+        var p=pw-i;if(Math.abs(c)<1e-9)return;
+        var ac=Math.abs(c),sign=c<0?' − ':' + ';
+        if(s==='')sign=c<0?'−':'';
+        var coef=(p>0&&Math.abs(ac-1)<1e-9)?'':String(Math.round(ac*100)/100);
+        s+=sign+coef+(p>0?'x':'')+(p>1?sup[p]:'');
+      });
+      return s||'0';
+    };
+    var col=function(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()};
+    var drawCubic=function(){
+      var a=+inp.A.value,b=+inp.B.value,c=+inp.C.value,d=+inp.D.value;
+      ids.forEach(function(k){document.getElementById('cb'+k+'v').textContent=num(+inp[k].value)});
+      var W=cv.clientWidth,H=cv.clientHeight;
+      if(!W)return; // 分頁沒顯示時不畫
+      var dpr=window.devicePixelRatio||1;
+      cv.width=W*dpr;cv.height=H*dpr;var g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
+      var px=function(x){return (x-X0)/(X1-X0)*W},py=function(y){return H-(y-Y0)/(Y1-Y0)*H};
+      g.clearRect(0,0,W,H);
+      g.lineWidth=1;g.strokeStyle=col('--line');
+      var x,y;
+      for(x=X0;x<=X1;x++){g.beginPath();g.moveTo(px(x),0);g.lineTo(px(x),H);g.stroke();}
+      for(y=Y0;y<=Y1;y+=2){g.beginPath();g.moveTo(0,py(y));g.lineTo(W,py(y));g.stroke();}
+      g.strokeStyle=col('--muted');g.lineWidth=1.5;
+      g.beginPath();g.moveTo(0,py(0));g.lineTo(W,py(0));g.moveTo(px(0),0);g.lineTo(px(0),H);g.stroke();
+      g.fillStyle=col('--muted');g.font='12px sans-serif';
+      for(x=X0+1;x<X1;x++){if(x)g.fillText(x,px(x)-4,py(0)+14);}
+      for(y=Y0+4;y<Y1;y+=4){if(y)g.fillText(y,px(0)+4,py(y)+4);}
+      var f=function(x){return ((a*x+b)*x+c)*x+d},fp=function(x){return (3*a*x+2*b)*x+c};
+      var curve=function(fn,color,width,dash){
+        g.strokeStyle=color;g.lineWidth=width;g.setLineDash(dash||[]);g.beginPath();
+        for(var i=0;i<=400;i++){var x=X0+(X1-X0)*i/400,y=Math.max(Y0-50,Math.min(Y1+50,fn(x)));if(i)g.lineTo(px(x),py(y));else g.moveTo(px(x),py(y));}
+        g.stroke();g.setLineDash([]);
+      };
+      var dot=function(x,y,color,label){
+        g.fillStyle=color;g.beginPath();g.arc(px(x),py(y),6,0,7);g.fill();
+        g.font='bold 13px sans-serif';g.fillText(label,px(x)+8,py(y)-8);
+      };
+      if(a===0){
+        curve(f,col('--accent'),3);
+        info.innerHTML='<div class="verdict-box warn">a = 0 時就不是三次函數了，請把 a 調成非 0。</div>';return;
+      }
+      if(showD.checked)curve(fp,col('--muted'),2,[6,5]);
+      curve(f,col('--accent'),3);
+      var D=b*b-3*a*c,h=-b/(3*a),k=f(h),ext=[];
+      if(D>1e-9){
+        var r=Math.sqrt(D),x1=(-b-r)/(3*a),x2=(-b+r)/(3*a);
+        if(x1>x2){var t=x1;x1=x2;x2=t;}
+        ext=[x1,x2];
+      }
+      // a>0：左邊是極大、右邊是極小；a<0 相反
+      ext.forEach(function(x,i){dot(x,f(x),col('--ok'),((a>0)===(i===0))?'極大':'極小')});
+      dot(h,k,col('--miss'),'反曲點');
+      var html='';
+      html+='<div class="row"><span class="k">f(x)</span><b>'+poly([a,b,c,d],3)+'</b></div>';
+      html+='<div class="row"><span class="k">f′(x)（斜率）</span><b>'+poly([3*a,2*b,c],2)+'</b></div>';
+      html+='<div class="row"><span class="k">b² − 3ac</span><b>('+num(b)+')² − 3·('+num(a)+')·('+num(c)+') = '+num(D)+'</b></div>';
+      html+='<div class="row"><span class="k">反曲點</span><b>x = −b/(3a) = '+num(h)+'，坐標 ('+num(h)+', '+num(k)+')</b></div>';
+      var dir=a>0?'往上':'往下',v;
+      if(D>1e-9){
+        html+='<div class="row"><span class="k">f′(x)=0 的根</span><b>x = '+num(ext[0])+'、'+num(ext[1])+'（兩相異實根）</b></div>';
+        html+='<div class="row"><span class="k">極值</span><b>f('+num(ext[0])+') = '+num(f(ext[0]))+'，f('+num(ext[1])+') = '+num(f(ext[1]))+'</b></div>';
+        v=a>0?'b² − 3ac > 0：兩個彎，圖形 上 → 下 → 上，有極大值、極小值':'b² − 3ac > 0：兩個彎，圖形 下 → 上 → 下，有極小值、極大值';
+      }else if(Math.abs(D)<=1e-9){
+        html+='<div class="row"><span class="k">f′(x)=0 的根</span><b>x = '+num(h)+'（重根）</b></div>';
+        v='b² − 3ac = 0：一路'+dir+'，只在反曲點躺平一下（平台），沒有極值';
+      }else{
+        html+='<div class="row"><span class="k">f′(x)=0 的根</span><b>沒有實根</b></div>';
+        v='b² − 3ac < 0：一路'+dir+'，沒有彎，沒有極值';
+      }
+      info.innerHTML=html+'<div class="verdict-box">'+v+'</div>';
+    };
+    ids.forEach(function(k){inp[k].addEventListener('input',drawCubic)});
+    showD.addEventListener('change',drawCubic);
+    document.querySelectorAll('[data-preset]').forEach(function(bt){
+      bt.addEventListener('click',function(){
+        var v=bt.dataset.preset.split(',');ids.forEach(function(k,i){inp[k].value=v[i]});drawCubic();
+      });
+    });
+    window.addEventListener('resize',drawCubic);
+    new MutationObserver(drawCubic).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme','data-accent','data-font']});
+    if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawCubic);
+    // 分頁切換後才有寬度，切換時重畫
+    document.querySelectorAll('.q-tab,.date-tab').forEach(function(t){t.addEventListener('click',function(){setTimeout(drawCubic,0)})});
+    drawCubic();
+  }
+
   /* ===== KaTeX ===== */
   function renderMath(){
     if(window.renderMathInElement){

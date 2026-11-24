@@ -358,6 +358,383 @@
   </article>
 </section>
 
+<section class="day" data-date="1124" data-title="11/24 反曲點・三次函數">
+  <div class="day-head">
+    <h2>11/24 主題：用 $f'(x)$ 看穿三次函數的長相</h2>
+    <p class="muted">學測偶爾會考三次函數：先求一次導函數 $f'(x)$，看 $f'(x)=0$ 有沒有實根，就能反推 $f(x)$ 的圖形長什麼樣。第一次看請先點「🥾 先看這裡」，用走山路的方式看懂，再往後看例題和練習。</p>
+    <div class="chips">
+      <span class="chip">三次函數</span><span class="chip">導函數</span><span class="chip">判別式</span><span class="chip">反曲點</span><span class="chip">極大・極小</span>
+    </div>
+  </div>
+
+  <div class="q-tabs" role="tablist" aria-label="題目"></div>
+
+  <!-- ---------------- 先看這裡 ---------------- -->
+  <article class="q" data-q="🥾 先看這裡">
+    <div class="card">
+      <div class="q-meta"><span class="tag">白話版</span><span class="tag">先看這裡</span></div>
+      <h3>把三次函數的圖形，想成一條山路</h3>
+      <p>先把數學名詞放一邊。三次函數的圖形，就是一條<strong>從左走到右的山路</strong>。</p>
+      <div class="body-fig">
+        <svg class="fig" viewBox="0 0 300 200" aria-label="山路示意：上坡、下坡、上坡">
+          <line x1="0" y1="100" x2="300" y2="100" class="fig-dash"/>
+          <polyline class="mini-f" data-fn="hike"/>
+          <circle cx="88" cy="64" r="5" class="fig-ok"/>
+          <circle cx="212" cy="136" r="5" class="fig-ok"/>
+          <circle cx="150" cy="100" r="5" class="fig-miss"/>
+          <text x="68" y="50" class="fig-s">山頂</text>
+          <text x="194" y="160" class="fig-s">谷底</text>
+          <text x="88" y="126" class="fig-s miss-t">反曲點</text>
+          <text x="8" y="80" class="fig-s acc-t">① 上坡</text>
+          <text x="156" y="72" class="fig-s bad-t">② 下坡</text>
+          <text x="236" y="176" class="fig-s acc-t">③ 上坡</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>$f'(x)$ 就是「坡度」</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>$f'(x)$</th><th>山路</th></tr></thead>
+        <tbody>
+          <tr><td>正的（$>0$）</td><td><b>上坡</b> ↗</td></tr>
+          <tr><td>負的（$&lt;0$）</td><td><b>下坡</b> ↘</td></tr>
+          <tr><td>等於 0</td><td><b>平地</b> →（山頂、谷底，或只是平一下）</td></tr>
+        </tbody>
+      </table></div>
+      <p>要算坡度，只要會一個公式：</p>
+      <p class="eq">$f(x)=ax^3+bx^2+cx+d\quad\Longrightarrow\quad f'(x)=3ax^2+2bx+c$</p>
+      <p class="muted small">口訣：次方拿下來乘，次方減 1。例如 $x^3$ 變成 $3x^2$，$x^2$ 變成 $2x$，$x$ 變成 $1$，常數變成 $0$。</p>
+    </div>
+
+    <div class="card">
+      <h3>想知道山路長怎樣，只要問一句話</h3>
+      <p class="eq" style="font-size:1.15em"><b>$f'(x)=0$ 有幾個解？</b></p>
+      <p>$f'(x)$ 是二次式，用國中就學過的<strong>判別式</strong>就知道有幾個解：</p>
+      <div class="case-grid">
+        <div class="case">
+          <div class="case-h">兩個解</div>
+          <svg class="mini" viewBox="0 0 160 120" data-fn="two"><line x1="0" y1="60" x2="160" y2="60" class="fig-dash"/><polyline class="mini-f"/></svg>
+          <p>上坡 → 下坡 → 上坡</p>
+          <p class="case-r">有一座山頂<br>和一個谷底</p>
+        </div>
+        <div class="case">
+          <div class="case-h">一個解（重根）</div>
+          <svg class="mini" viewBox="0 0 160 120" data-fn="flat"><line x1="0" y1="60" x2="160" y2="60" class="fig-dash"/><polyline class="mini-f"/></svg>
+          <p>上坡 → 平一下 → 上坡</p>
+          <p class="case-r">一直上坡<br>中間平一下</p>
+        </div>
+        <div class="case">
+          <div class="case-h">沒有解</div>
+          <svg class="mini" viewBox="0 0 160 120" data-fn="mono"><line x1="0" y1="60" x2="160" y2="60" class="fig-dash"/><polyline class="mini-f"/></svg>
+          <p>坡度永遠是正的</p>
+          <p class="case-r">一直上坡<br>沒有山也沒有谷</p>
+        </div>
+      </div>
+      <p>如果 $x^3$ 前面是<strong>負號</strong>（$a&lt;0$），就全部倒過來：一直下坡，或「下坡 → 上坡 → 下坡」。</p>
+    </div>
+
+    <div class="card">
+      <h3>反曲點：山頂和谷底的「正中間」</h3>
+      <p>山路在這一點從「往下彎」變成「往上彎」。找它有兩種方法：</p>
+      <ul>
+        <li>直接取<strong>山頂和谷底的平均</strong>（$x$ 平均、高度也平均）</li>
+        <li>用公式 $x=-\dfrac{b}{3a}$（沒有山頂谷底的時候也能用）</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>兩個小例子</h3>
+      <h4>例 A　$f(x)=x^3-3x$</h4>
+      <ul>
+        <li>坡度 $f'(x)=3x^2-3$，令它 $=0$：$x^2=1$，$x=1$ 或 $x=-1$ → <b>兩個解，有山有谷</b></li>
+        <li>山頂：$x=-1$，高度 $f(-1)=-1+3=2$</li>
+        <li>谷底：$x=1$，高度 $f(1)=1-3=-2$</li>
+        <li>反曲點在正中間：$\left(\frac{-1+1}{2},\frac{2+(-2)}{2}\right)=(0,0)$</li>
+      </ul>
+      <h4>例 B　$f(x)=x^3+3x$</h4>
+      <ul>
+        <li>坡度 $f'(x)=3x^2+3$。平方一定 $\ge0$，再加 3 一定 $>0$ → <b>沒有解，一直上坡</b></li>
+      </ul>
+    </div>
+
+    <div class="tip"><b>解題只要三步</b>：① 算出坡度 $f'(x)$ → ② 看 $f'(x)=0$ 有幾個解 → ③ 對照上面三張圖，決定山路長相。<br>看懂了再往後面的分頁走：「互動圖形」可以自己拉拉看，後面的例題會用同樣的三步來解。</div>
+  </article>
+
+  <!-- ---------------- 觀念① ---------------- -->
+  <article class="q" data-q="觀念① 三種長相">
+    <div class="card">
+      <div class="q-meta"><span class="tag">觀念</span><span class="tag">導函數＝斜率</span></div>
+      <h3>$f'(x)$ 是「坡度」：正的是上坡、負的是下坡</h3>
+      <p>三次函數寫成 $f(x)=ax^3+bx^2+cx+d\ (a\ne0)$，它的一次導函數是</p>
+      <p class="eq">$f'(x)=3ax^2+2bx+c$</p>
+      <p>$f'(x)$ 代表圖形在 $x$ 這一點的<strong>切線斜率</strong>：</p>
+      <ul>
+        <li>$f'(x)>0$：<strong>上坡</strong>（圖形往上走）</li>
+        <li>$f'(x)&lt;0$：<strong>下坡</strong>（圖形往下走）</li>
+        <li>$f'(x)=0$：<strong>平地</strong>（水平切線），可能是山頂、谷底，或只是平一下</li>
+      </ul>
+      <p>關鍵在這裡：$f'(x)$ 是一個<strong>二次函數</strong>（拋物線）！所以「$f'(x)$ 什麼時候正、什麼時候負」，就是國中、高一學過的<strong>二次函數判別式</strong>問題。</p>
+    </div>
+
+    <div class="card">
+      <h3>判別式決定一切</h3>
+      <p>$f'(x)=0$ 的判別式是 $(2b)^2-4\cdot3a\cdot c=4(b^2-3ac)$，所以只要看 $b^2-3ac$ 的正負。以 $a>0$ 為例：</p>
+      <div class="case-grid">
+        <div class="case">
+          <div class="case-h">$b^2-3ac>0$</div>
+          <svg class="mini" viewBox="0 0 160 120" data-fn="two"><line x1="0" y1="60" x2="160" y2="60" class="fig-dash"/><polyline class="mini-f"/></svg>
+          <p>$f'(x)=0$ 有<b>兩個相異實根</b> $x_1&lt;x_2$</p>
+          <p>斜率：正 → 負 → 正<br>圖形：<b>上 → 下 → 上</b></p>
+          <p class="case-r">有山頂、有谷底<br>（極大值、極小值）</p>
+        </div>
+        <div class="case">
+          <div class="case-h">$b^2-3ac=0$</div>
+          <svg class="mini" viewBox="0 0 160 120" data-fn="flat"><line x1="0" y1="60" x2="160" y2="60" class="fig-dash"/><polyline class="mini-f"/></svg>
+          <p>$f'(x)=0$ 有<b>重根</b></p>
+          <p>斜率：正 → 0 → 正<br>圖形：一路往上，中間<b>躺平一下</b></p>
+          <p class="case-r">一直上坡，中間平一下<br>（沒有極值）</p>
+        </div>
+        <div class="case">
+          <div class="case-h">$b^2-3ac&lt;0$</div>
+          <svg class="mini" viewBox="0 0 160 120" data-fn="mono"><line x1="0" y1="60" x2="160" y2="60" class="fig-dash"/><polyline class="mini-f"/></svg>
+          <p>$f'(x)=0$ <b>沒有實根</b></p>
+          <p>斜率：永遠是正的<br>圖形：<b>一路往上</b></p>
+          <p class="case-r">一直上坡<br>（沒有極值）</p>
+        </div>
+      </div>
+      <p>$a&lt;0$ 時，整張圖<strong>上下顛倒</strong>：兩個彎的變成「下 → 上 → 下」，單調的變成一路往下。</p>
+    </div>
+
+    <details class="step"><summary>🤔 為什麼斜率會是「正 → 負 → 正」？</summary>
+      <p>$a>0$ 時，$f'(x)=3ax^2+2bx+c$ 是<strong>開口向上</strong>的拋物線。</p>
+      <ul>
+        <li>有兩根 $x_1&lt;x_2$：拋物線在兩根<strong>外面</strong>是正的、<strong>中間</strong>是負的。所以 $x&lt;x_1$ 時 $f$ 往上，$x_1&lt;x&lt;x_2$ 時往下，$x>x_2$ 時又往上。$x_1$ 是山頂（極大），$x_2$ 是谷底（極小）。</li>
+        <li>重根：拋物線只碰到 $x$ 軸一下，其他地方都是正的。</li>
+        <li>沒有根：拋物線整條在 $x$ 軸上方，永遠是正的。</li>
+      </ul>
+      <p>到「🧪 互動圖形」分頁拉拉看，圖上的虛線就是 $f'(x)$，可以同時看到兩條曲線怎麼對應。</p>
+    </details>
+
+    <div class="tip"><b>一句話記住</b>：三次函數的長相看 $f'(x)=0$ 的實根個數。<strong>兩個根就有兩個彎；一個重根或沒有根，就是一路單調</strong>（$a>0$ 往上、$a&lt;0$ 往下）。</div>
+  </article>
+
+  <!-- ---------------- 互動 ---------------- -->
+  <article class="q" data-q="🧪 互動圖形">
+    <div class="card">
+      <div class="q-meta"><span class="tag">互動</span><span class="tag">拖拉係數</span></div>
+      <h3>拉拉看：係數怎麼改變三次函數的長相</h3>
+      <p class="muted small">實線是 $f(x)$，虛線是斜率 $f'(x)$。橘點是反曲點，綠點是極大／極小。注意看：<b>虛線碰到 $x$ 軸的地方，實線剛好在山頂或谷底</b>。</p>
+      <div class="presets">
+        <button type="button" class="q-tab" data-preset="1,-6,9,1">兩個彎</button>
+        <button type="button" class="q-tab" data-preset="1,-3,3,1">平台</button>
+        <button type="button" class="q-tab" data-preset="1,0,2,0">一路往上</button>
+        <button type="button" class="q-tab" data-preset="-1,0,3,0">a&lt;0 兩個彎</button>
+      </div>
+      <div class="cubic-ctl">
+        <label>$a$ <input type="range" id="cbA" min="-3" max="3" step="0.5" value="1"><b id="cbAv"></b></label>
+        <label>$b$ <input type="range" id="cbB" min="-6" max="6" step="0.5" value="-6"><b id="cbBv"></b></label>
+        <label>$c$ <input type="range" id="cbC" min="-12" max="12" step="0.5" value="9"><b id="cbCv"></b></label>
+        <label>$d$ <input type="range" id="cbD" min="-10" max="10" step="1" value="1"><b id="cbDv"></b></label>
+      </div>
+      <label class="chk"><input type="checkbox" id="cbShowD" checked> 顯示 $f'(x)$（斜率，虛線）</label>
+      <div class="cv-wrap"><canvas id="cubicCv" aria-label="三次函數圖形"></canvas></div>
+      <div class="cb-info" id="cbInfo"></div>
+    </div>
+  </article>
+
+  <!-- ---------------- 觀念② ---------------- -->
+  <article class="q" data-q="觀念② 反曲點">
+    <div class="card">
+      <div class="q-meta"><span class="tag">觀念</span><span class="tag">反曲點＝對稱中心</span></div>
+      <h3>反曲點：曲線「彎的方向」改變的地方</h3>
+      <p>三次函數的圖形一定會從「像山頂那樣往下彎（凹口向下）」變成「像碗那樣往上彎（凹口向上）」，或反過來。<strong>彎的方向改變的那一點</strong>就叫<strong>反曲點</strong>。</p>
+
+      <h4>怎麼找？看斜率拋物線的頂點</h4>
+      <p>以 $a>0$ 為例，斜率 $f'(x)=3ax^2+2bx+c$ 是開口向上的拋物線，在<strong>頂點</strong>那裡斜率最小。頂點左邊斜率越來越小（往下彎），右邊斜率越來越大（往上彎）。所以反曲點就在 $f'(x)$ 的<strong>對稱軸</strong>上：</p>
+      <p class="eq">$h=-\dfrac{2b}{2\cdot3a}=-\dfrac{b}{3a}$，反曲點 $\big(h,\,f(h)\big)$</p>
+      <p class="muted small">（學過二階導數的話：$f''(x)=6ax+2b=0$ 也得到同一個 $x=-\frac{b}{3a}$。）</p>
+    </div>
+
+    <div class="card">
+      <h3>超好用性質：反曲點是圖形的「對稱中心」</h3>
+      <p>三次函數的圖形繞反曲點轉 $180^\circ$ 會和自己重合（點對稱）。所以：</p>
+      <ul>
+        <li><strong>極大點和極小點的正中間，就是反曲點</strong>（$x$ 坐標、$y$ 坐標都是平均）。</li>
+        <li>極值點的 $x$ 坐標 $x_1+x_2=-\frac{2b}{3a}=2h$，跟根與係數關係一致。</li>
+        <li>知道反曲點和一個極值點，就能直接寫出另一個極值點。</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>學測課本的寫法：$y=a(x-h)^3+p(x-h)+k$</h3>
+      <p>任何三次函數都能改寫成這個樣子，其中 $(h,k)$ 是反曲點（對稱中心），$p$ 是<strong>反曲點的切線斜率</strong>（$p=f'(h)$）。長相由 $a$、$p$ 的正負決定：</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>$a$、$p$</th><th>長相</th><th>對應 $f'(x)=0$</th></tr></thead>
+        <tbody>
+          <tr><td>異號</td><td>兩個彎（有極大、極小）</td><td>兩相異實根</td></tr>
+          <tr><td>$p=0$</td><td>單調，反曲點處躺平</td><td>重根</td></tr>
+          <tr><td>同號</td><td>單調，沒有躺平</td><td>沒有實根</td></tr>
+        </tbody>
+      </table></div>
+      <p>這兩套講法其實是同一件事。算一下會發現 $a\cdot p=-\dfrac{b^2-3ac}{3}$，所以「$a$、$p$ 異號」就等於「$b^2-3ac>0$」。</p>
+      <p class="muted small">學測（數A）課本主要用 $y=a(x-h)^3+p(x-h)+k$ 和「一次近似」來看三次函數，「導數」「反曲點」是分科（數甲）的用語。兩種方法答案一樣，解題時哪個順手用哪個。</p>
+    </div>
+
+    <div class="tip"><b>口訣</b>：反曲點 $x=-\frac{b}{3a}$；它是對稱中心，<strong>極大點和極小點的中點就是它</strong>。</div>
+  </article>
+
+  <!-- ---------------- 例1 ---------------- -->
+  <article class="q" data-q="例1 求極值與反曲點">
+    <div class="card">
+      <div class="q-meta"><span class="tag">例題</span><span class="tag">基本題</span></div>
+      <h3>例 1　$f(x)=x^3-6x^2+9x+1$</h3>
+      <ol class="opts">
+        <li>(1) 求 $f(x)$ 的極大值、極小值。</li>
+        <li>(2) 求反曲點，並驗證它是兩個極值點的中點。</li>
+        <li>(3) 把 $f(x)$ 寫成 $a(x-h)^3+p(x-h)+k$ 的形式。</li>
+      </ol>
+    </div>
+
+    <details class="step hint"><summary>💡 提示</summary>
+      <p>先算 $f'(x)$，令它等於 0 解出兩根。兩根的「左邊、中間、右邊」，$f'$ 的正負是什麼？</p>
+    </details>
+
+    <details class="step"><summary>📘 (1) 極值</summary>
+      <p class="eq">$f'(x)=3x^2-12x+9=3(x^2-4x+3)=3(x-1)(x-3)$</p>
+      <p>$f'(x)=0$ 有兩根 $x=1,\,3$，屬於「兩個彎」。$a=1>0$，所以斜率是 正 → 負 → 正：</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>$x$</th><th>$x&lt;1$</th><th>$1$</th><th>$1&lt;x&lt;3$</th><th>$3$</th><th>$x>3$</th></tr></thead>
+        <tbody>
+          <tr><td>$f'(x)$</td><td>＋</td><td>0</td><td>－</td><td>0</td><td>＋</td></tr>
+          <tr><td>$f(x)$</td><td>上坡 ↗</td><td><b>山頂（極大）</b></td><td>下坡 ↘</td><td><b>谷底（極小）</b></td><td>上坡 ↗</td></tr>
+        </tbody>
+      </table></div>
+      <p class="eq">極大值 $f(1)=1-6+9+1=5$，極小值 $f(3)=27-54+27+1=1$</p>
+      <div class="answer">極大值 5（在 $x=1$），極小值 1（在 $x=3$）</div>
+    </details>
+
+    <details class="step"><summary>📘 (2) 反曲點</summary>
+      <p class="eq">$h=-\dfrac{b}{3a}=-\dfrac{-6}{3}=2,\quad f(2)=8-24+18+1=3$</p>
+      <p>驗證：極大點 $(1,5)$ 和極小點 $(3,1)$ 的中點是 $\left(\frac{1+3}{2},\frac{5+1}{2}\right)=(2,3)$，剛好就是反曲點 ✔</p>
+      <div class="answer">反曲點 $(2,3)$</div>
+    </details>
+
+    <details class="step"><summary>📘 (3) 改寫成學測形式</summary>
+      <p>$a=1$、$(h,k)=(2,3)$，$p$ 就是反曲點的斜率：$p=f'(2)=12-24+9=-3$。</p>
+      <p class="eq">$f(x)=(x-2)^3-3(x-2)+3$</p>
+      <p>展開檢查：$(x^3-6x^2+12x-8)+(-3x+6)+3=x^3-6x^2+9x+1$ ✔</p>
+      <p>$a=1>0$、$p=-3&lt;0$ 異號 → 兩個彎，跟 (1) 的結論一致。</p>
+      <div class="answer">$f(x)=(x-2)^3-3(x-2)+3$</div>
+    </details>
+
+    <div class="tip"><b>解題流程</b>：① 求 $f'(x)$ → ② 解 $f'(x)=0$ → ③ 畫正負表 → ④ 代回 $f$ 求極值。反曲點用 $-\frac{b}{3a}$，或直接取兩個極值點的中點。</div>
+  </article>
+
+  <!-- ---------------- 例2 ---------------- -->
+  <article class="q" data-q="例2 遞增求範圍">
+    <div class="card">
+      <div class="q-meta"><span class="tag">例題</span><span class="tag">反推參數</span></div>
+      <h3>例 2　$f(x)=x^3+kx^2+3x+1$ 在整條實數線上都是遞增函數，求 $k$ 的範圍。</h3>
+    </div>
+
+    <details class="step hint"><summary>💡 提示</summary>
+      <p>「一路往上、沒有彎」對應三種長相中的哪幾種？$f'(x)=0$ 的判別式要滿足什麼？</p>
+    </details>
+
+    <details class="step"><summary>📘 完整解析</summary>
+      <h4>Step 1　翻譯條件</h4>
+      <p>「遞增」就是<strong>一直上坡</strong>。$a=1>0$，要一直上坡，就<strong>不能有山頂和谷底</strong>。也就是 $f'(x)=0$ 不能有兩個相異實根：只能是<strong>重根或無實根</strong>。</p>
+      <h4>Step 2　判別式</h4>
+      <p class="eq">$f'(x)=3x^2+2kx+3,\quad \text{判別式}=(2k)^2-4\cdot3\cdot3=4k^2-36\le0$</p>
+      <p class="eq">$k^2\le9\ \Rightarrow\ -3\le k\le3$</p>
+      <h4>Step 3　等號可以取嗎？（常見陷阱）</h4>
+      <p>$k=3$ 時 $f'(x)=3x^2+6x+3=3(x+1)^2\ge0$，只有在 $x=-1$ 那一點等於 0，其他地方都是正的。圖形只是在 $x=-1$ <strong>躺平一下</strong>（平台型），仍然一路往上，所以<strong>還是遞增</strong>。$k=-3$ 也一樣。</p>
+      <div class="answer">答案：$-3\le k\le3$</div>
+    </details>
+
+    <div class="tip"><b>考點與陷阱</b>：「遞增」用 $\le0$（含等號），因為重根只讓圖形在一點躺平，不會往下走。題目如果改成「<strong>有極大值與極小值</strong>」，就要用 $>0$（不含等號），答案變成 $k&lt;-3$ 或 $k>3$。</div>
+  </article>
+
+  <!-- ---------------- 例3 ---------------- -->
+  <article class="q" data-q="例3 三相異實根">
+    <div class="card">
+      <div class="q-meta"><span class="tag">例題</span><span class="tag">極值＋圖形交點</span></div>
+      <h3>例 3　方程式 $x^3-3x+k=0$ 有三個相異實根，求 $k$ 的範圍。</h3>
+    </div>
+
+    <details class="step hint"><summary>💡 提示</summary>
+      <p>把方程式改寫成 $x^3-3x=-k$，看成「曲線 $y=x^3-3x$」和「水平線 $y=-k$」的交點個數。</p>
+    </details>
+
+    <details class="step"><summary>📘 完整解析</summary>
+      <h4>Step 1　先看曲線 $y=x^3-3x$ 的長相</h4>
+      <p class="eq">$y'=3x^2-3=3(x+1)(x-1)$</p>
+      <p>兩根 $x=\pm1$ → 兩個彎。極大值 $y(-1)=-1+3=2$，極小值 $y(1)=1-3=-2$。</p>
+      <div class="body-fig">
+        <svg class="fig" viewBox="0 0 300 220" aria-label="y=x^3-3x 與水平線">
+          <line x1="10" y1="110" x2="290" y2="110" class="fig-dash"/>
+          <line x1="150" y1="10" x2="150" y2="210" class="fig-dash"/>
+          <polyline class="mini-f" data-fn="x3m3x"/>
+          <line x1="10" y1="70" x2="290" y2="70" class="fig-lv"/>
+          <line x1="10" y1="150" x2="290" y2="150" class="fig-lv"/>
+          <line x1="10" y1="125" x2="290" y2="125" class="ar-ok"/>
+          <text x="52" y="58" class="fig-s muted-t">極大 y = 2</text>
+          <text x="176" y="172" class="fig-s muted-t">極小 y = −2</text>
+          <text x="92" y="144" class="fig-s acc-t">y = −k</text>
+        </svg>
+        <p class="muted small">水平線 $y=-k$ 夾在 $y=2$ 和 $y=-2$ 中間時，和曲線交 3 點。</p>
+      </div>
+      <h4>Step 2　水平線上下移動，數交點</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>水平線 $y=-k$ 的位置</th><th>交點數</th><th>對應 $k$</th></tr></thead>
+        <tbody>
+          <tr><td>高於極大值：$-k>2$</td><td>1</td><td>$k&lt;-2$</td></tr>
+          <tr><td>剛好碰到山頂：$-k=2$</td><td>2（一個重根）</td><td>$k=-2$</td></tr>
+          <tr class="hl"><td>夾在中間：$-2&lt;-k&lt;2$</td><td><b>3</b></td><td>$-2&lt;k&lt;2$</td></tr>
+          <tr><td>剛好碰到谷底：$-k=-2$</td><td>2（一個重根）</td><td>$k=2$</td></tr>
+          <tr><td>低於極小值：$-k&lt;-2$</td><td>1</td><td>$k>2$</td></tr>
+        </tbody>
+      </table></div>
+      <div class="answer">答案：$-2&lt;k&lt;2$</div>
+      <h4>另一種說法（直接用極值）</h4>
+      <p>$f(x)=x^3-3x+k$ 有三個相異實根 ⇔ 有兩個彎，<strong>而且極大值在 $x$ 軸上方、極小值在 $x$ 軸下方</strong>：</p>
+      <p class="eq">$f(-1)\cdot f(1)&lt;0\ \Rightarrow\ (k+2)(k-2)&lt;0\ \Rightarrow\ -2&lt;k&lt;2$</p>
+    </details>
+
+    <div class="tip"><b>考點與陷阱</b>：三次方程式有三個相異實根，要同時滿足兩個條件：① $f'(x)=0$ 有兩相異實根（有兩個彎）；② <strong>極大值 × 極小值 &lt; 0</strong>。只檢查①不夠：$x^3-3x+5=0$ 也有兩個彎，但整條曲線的彎都在 $x$ 軸上方，只有 1 個實根。</div>
+  </article>
+
+  <!-- ---------------- 練習 ---------------- -->
+  <article class="q" data-q="✏️ 練習">
+    <div class="card">
+      <div class="q-meta"><span class="tag">練習</span><span class="tag">自我檢測</span></div>
+      <h3>小試身手（先自己算，再打開答案）</h3>
+      <ol class="opts">
+        <li><b>練習 1</b>　$f(x)=-x^3+3x^2+kx$ 沒有極值，求 $k$ 的範圍。</li>
+        <li><b>練習 2</b>　$f(x)=2x^3-3x^2-12x+5$，求反曲點坐標，並用「極值點的中點」驗算。</li>
+      </ol>
+    </div>
+
+    <details class="step"><summary>📘 練習 1 解答</summary>
+      <p>沒有極值 ⇔ $f'(x)=0$ 是重根或無實根：</p>
+      <p class="eq">$f'(x)=-3x^2+6x+k,\quad \text{判別式}=36+12k\le0\ \Rightarrow\ k\le-3$</p>
+      <p>這題 $a=-1&lt;0$，所以圖形是<strong>一路往下</strong>。判別式的判斷方式跟 $a>0$ 完全一樣。</p>
+      <div class="answer">答案：$k\le-3$</div>
+    </details>
+
+    <details class="step"><summary>📘 練習 2 解答</summary>
+      <p class="eq">$h=-\dfrac{b}{3a}=-\dfrac{-3}{6}=\dfrac12,\quad f\!\left(\tfrac12\right)=\tfrac14-\tfrac34-6+5=-\tfrac32$</p>
+      <p>驗算：$f'(x)=6x^2-6x-12=6(x-2)(x+1)$，極值點 $x=-1$、$x=2$：</p>
+      <p class="eq">$f(-1)=-2-3+12+5=12,\quad f(2)=16-12-24+5=-15$</p>
+      <p>中點 $\left(\frac{-1+2}{2},\frac{12+(-15)}{2}\right)=\left(\frac12,-\frac32\right)$ ✔</p>
+      <div class="answer">答案：反曲點 $\left(\dfrac12,-\dfrac32\right)$</div>
+    </details>
+
+    <div class="tip"><b>本日重點回顧</b>：① $f'(x)=3ax^2+2bx+c$ 是斜率；② 看 $b^2-3ac$：$>0$ 兩個彎、$\le0$ 單調；③ 反曲點 $x=-\frac{b}{3a}$，是對稱中心，也是兩極值點的中點；④ 三相異實根要「兩個彎」加上「極大 × 極小 &lt; 0」。</div>
+  </article>
+</section>
+
 </main>
 
 <!-- 右下角切換按鈕 -->
