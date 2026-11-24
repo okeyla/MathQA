@@ -3,60 +3,119 @@
   function store(k,v){try{localStorage.setItem(k,v)}catch(e){}}
   function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
 
-  /* ===== 日期分頁＋題目分頁 ===== */
+  /* ===== 日期分頁＋題目列表 ===== */
+  // 每個日期：先顯示「題目列表」，點一題才進入該題；題目頁上方有「回列表／上一題／下一題」。
+  // 網址：#MMDD 是列表，#MMDD-n 是第 n 題（手機返回鍵可回列表）。
   var days=[].slice.call(document.querySelectorAll('.day'));
   var dateTabs=document.getElementById('dateTabs');
   days.forEach(function(day){
+    var date=day.dataset.date;
     var b=document.createElement('button');
     b.className='date-tab';b.setAttribute('role','tab');
-    b.textContent=day.dataset.title||day.dataset.date;
-    b.onclick=function(){showDay(day.dataset.date,true)};
-    b.dataset.date=day.dataset.date;
+    b.textContent=day.dataset.title||date;
+    b.dataset.date=date;
+    b.onclick=function(){go('#'+date)};
     dateTabs.appendChild(b);
 
     var qs=[].slice.call(day.querySelectorAll('.q'));
-    var qt=day.querySelector('.q-tabs');
+    var holder=day.querySelector('.q-tabs');
+
+    // 題目列表：相鄰、同主題（data-group）的題目放在同一個色塊，色塊用主題色的深淺區隔
+    var list=document.createElement('div');
+    list.className='q-groups';
+    var tones=[[6,35],[20,60],[36,85],[52,100]]; // [底色濃度%, 邊條濃度%]
+    var gs=[],ol=null;
     qs.forEach(function(q,i){
-      var t=document.createElement('button');
-      t.className='q-tab';t.setAttribute('role','tab');t.textContent=q.dataset.q;
-      t.onclick=function(){showQ(day,i,true)};
-      qt.appendChild(t);
+      var g=q.dataset.group||'';
+      if(!ol||g!==gs[gs.length-1].name){
+        var t=tones[gs.length%tones.length];
+        var box=document.createElement('section');
+        box.className='q-group';
+        box.style.setProperty('--mix',t[0]+'%');box.style.setProperty('--edge',t[1]+'%');
+        if(g)box.innerHTML='<div class="q-group-h"><span class="q-group-name">'+g+'</span><span class="q-group-range"></span></div>';
+        ol=document.createElement('ol');ol.className='q-list';
+        box.appendChild(ol);list.appendChild(box);
+        gs.push({name:g,box:box,from:i,to:i,tone:t});
+      }
+      var G=gs[gs.length-1];G.to=i;q._g=G;
+      var li=document.createElement('li');
+      var a=document.createElement('a');
+      a.href='#'+date+'-'+(i+1);
+      var h3=q.querySelector('.card h3');
+      var tags=[].map.call(q.querySelectorAll('.card .q-meta .tag'),function(t){return '<span class="tag">'+t.textContent+'</span>'}).join('');
+      a.innerHTML='<span class="q-no">'+(i+1)+'</span><span class="q-main"><span class="q-name">'+q.dataset.q+'</span>'+
+        (h3?'<span class="q-sub">'+h3.innerHTML+'</span>':'')+(tags?'<span class="q-tags">'+tags+'</span>':'')+'</span><span class="q-go">›</span>';
+      a.onclick=function(e){e.preventDefault();go(a.getAttribute('href'))};
+      li.appendChild(a);ol.appendChild(li);
+    });
+    gs.forEach(function(G){
+      var r=G.box.querySelector('.q-group-range');
+      if(r)r.textContent=G.from===G.to?'第 '+(G.from+1)+' 題':'第 '+(G.from+1)+'–'+(G.to+1)+' 題';
     });
 
-    var tg=document.createElement('button');
-    tg.className='toggle-all';tg.type='button';
+    // 題目頁上方的導覽列
+    var nav=document.createElement('div');
+    nav.className='q-nav';
+    nav.innerHTML='<button type="button" class="nav-back">← 題目列表</button>'+
+      '<span class="nav-pos"></span>'+
+      '<button type="button" class="nav-prev">‹ 上一題</button>'+
+      '<button type="button" class="nav-next">下一題 ›</button>'+
+      '<button type="button" class="toggle-all"></button>';
+    var tg=nav.querySelector('.toggle-all');
     var setLabel=function(){
-      var all=day.querySelectorAll('details.step'),open=day.querySelectorAll('details.step[open]');
-      tg.textContent=open.length===all.length?'全部收起':'全部展開';
+      var cur=day.querySelector('.q:not([hidden])');if(!cur)return;
+      var all=cur.querySelectorAll('details.step'),open=cur.querySelectorAll('details.step[open]');
+      tg.hidden=!all.length;
+      tg.textContent=all.length&&open.length===all.length?'全部收起':'全部展開';
     };
     tg.onclick=function(){
+      var cur=day.querySelector('.q:not([hidden])');if(!cur)return;
       var expand=tg.textContent==='全部展開';
-      day.querySelectorAll('details.step').forEach(function(d){d.open=expand});
+      cur.querySelectorAll('details.step').forEach(function(d){d.open=expand});
       setLabel();
     };
     day.querySelectorAll('details.step').forEach(function(d){d.addEventListener('toggle',setLabel)});
-    qt.appendChild(tg);setLabel();
+    nav.querySelector('.nav-back').onclick=function(){go('#'+date)};
+    day._setLabel=setLabel;day._list=list;day._nav=nav;day._qs=qs;
+
+    holder.replaceWith(list);
+    list.parentNode.insertBefore(nav,list.nextSibling);
   });
 
-  function showQ(day,i,push){
-    var qs=day.querySelectorAll('.q'),ts=day.querySelectorAll('.q-tab');
-    for(var k=0;k<qs.length;k++){qs[k].hidden=k!==i;ts[k].setAttribute('aria-selected',k===i)}
-    if(push){history.replaceState(null,'','#'+day.dataset.date+'-'+(i+1));}
+  function go(hash){
+    if(location.hash!==hash)history.pushState(null,'',hash);
+    route();window.scrollTo({top:0});
   }
-  function showDay(date,push){
-    days.forEach(function(d){d.hidden=d.dataset.date!==date});
+  function route(){
+    var m=/^#(\w+?)(?:-(\d+))?$/.exec(location.hash);
+    var day=days[days.length-1]; // 預設：最新日期
+    if(m){var f=days.filter(function(d){return d.dataset.date===m[1]})[0];if(f)day=f;}
+    var date=day.dataset.date;
+    days.forEach(function(d){d.hidden=d!==day});
     [].forEach.call(dateTabs.children,function(b){b.setAttribute('aria-selected',b.dataset.date===date)});
-    var day=days.filter(function(d){return d.dataset.date===date})[0];
-    if(push){showQ(day,0,true);window.scrollTo({top:0})}
+    var qs=day._qs,n=qs.length;
+    var i=m&&m[2]?Math.max(0,Math.min(+m[2]-1,n-1)):-1;
+    var head=day.querySelector('.day-head');
+    if(i<0){ // 列表模式
+      qs.forEach(function(q){q.hidden=true});
+      day._list.hidden=false;day._nav.hidden=true;if(head)head.hidden=false;
+      return;
+    }
+    qs.forEach(function(q,k){q.hidden=k!==i});
+    day._list.hidden=true;day._nav.hidden=false;if(head)head.hidden=true;
+    var nav=day._nav;
+    var G=qs[i]._g;
+    nav.style.setProperty('--mix',G.tone[0]+'%');nav.style.setProperty('--edge',G.tone[1]+'%');
+    nav.querySelector('.nav-pos').innerHTML=(G.name?'<b>'+G.name+'</b>｜':'')+'第 '+(i+1)+' / '+n+' 題';
+    var pv=nav.querySelector('.nav-prev'),nx=nav.querySelector('.nav-next');
+    pv.disabled=i===0;nx.disabled=i===n-1;
+    pv.onclick=function(){go('#'+date+'-'+i)};
+    nx.onclick=function(){go('#'+date+'-'+(i+2))};
+    day._setLabel();
+    window.dispatchEvent(new Event('resize')); // 讓互動圖在顯示後重畫
   }
-
-  // 預設顯示最新日期（最後一個 section），或網址 #MMDD-n
-  var m=/^#(\w+?)(?:-(\d+))?$/.exec(location.hash);
-  var startDay=days[days.length-1];
-  if(m){var f=days.filter(function(d){return d.dataset.date===m[1]})[0];if(f)startDay=f;}
-  showDay(startDay.dataset.date,false);
-  var qi=m&&m[2]?Math.max(0,Math.min(+m[2]-1,startDay.querySelectorAll('.q').length-1)):0;
-  showQ(startDay,qi,false);
+  window.addEventListener('popstate',route);
+  route();
 
   /* ===== Q1 機率表 ===== */
   var rN=document.getElementById('robotN');
@@ -196,6 +255,124 @@
     document.querySelectorAll('.q-tab,.date-tab').forEach(function(t){t.addEventListener('click',function(){setTimeout(drawCubic,0)})});
     drawCubic();
   }
+
+
+  /* ===== 11/24 三角與算幾：互動圖解 ===== */
+  var D2R=Math.PI/180;
+  var r3=function(v){return (Math.round(v*1000)/1000).toFixed(3)};
+  var L=function(x1,y1,x2,y2,cls){return '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" class="'+cls+'"/>'};
+  var T=function(x,y,s,cls,anchor){return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" class="'+(cls||'fig-s')+'"'+(anchor?' text-anchor="'+anchor+'"':'')+'>'+s+'</text>'};
+  var Pg=function(pts,cls){return '<polygon points="'+pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' ')+'" class="'+cls+'"/>'};
+  var Dot=function(x,y,cls){return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="4.5" class="'+(cls||'fig-dot')+'"/>'};
+  // 以 (cx,cy) 為圓心、半徑 r，從角度 a0 到 a1（數學角度，逆時針）畫弧
+  var Arc=function(cx,cy,r,a0,a1,cls){
+    var x0=cx+r*Math.cos(a0*D2R),y0=cy-r*Math.sin(a0*D2R),x1=cx+r*Math.cos(a1*D2R),y1=cy-r*Math.sin(a1*D2R);
+    return '<path d="M'+x0.toFixed(1)+','+y0.toFixed(1)+' A'+r+','+r+' 0 '+((a1-a0)>180?1:0)+' 0 '+x1.toFixed(1)+','+y1.toFixed(1)+'" class="'+(cls||'fig-arc-s')+'"/>';
+  };
+  var wire=function(ids,fn){
+    var ok=true;ids.forEach(function(id){if(!document.getElementById(id))ok=false});
+    if(!ok)return;
+    ids.forEach(function(id){document.getElementById(id).addEventListener('input',fn)});
+    fn();
+  };
+
+  // ---- 和角公式 ----
+  wire(['saA','saB'],function(){
+    var a=+document.getElementById('saA').value,b=+document.getElementById('saB').value;
+    document.getElementById('saAv').textContent=a+'°';document.getElementById('saBv').textContent=b+'°';
+    var S=230,ox=30,oy=270,mx=function(x){return ox+S*x},my=function(y){return oy-S*y};
+    var A=[Math.cos(b*D2R)*Math.cos(a*D2R),Math.cos(b*D2R)*Math.sin(a*D2R)];
+    var B=[Math.cos((a+b)*D2R),Math.sin((a+b)*D2R)];
+    var Ax=mx(A[0]),Ay=my(A[1]),Bx=mx(B[0]),By=my(B[1]);
+    var s='';
+    s+=L(8,oy,334,oy,'fig-line');
+    s+=Pg([[ox,oy],[Ax,Ay],[Ax,oy]],'tri1');
+    s+=Pg([[Ax,Ay],[Ax,By],[Bx,By]],'tri2');
+    s+=L(Bx,By,Bx,oy,'fig-dash');
+    s+=L(ox,oy,Ax,Ay,'fig-line')+L(Ax,Ay,Bx,By,'fig-line');
+    s+=L(Ax,oy,Ax,Ay,'seg-ok')+L(Ax,Ay,Ax,By,'seg-ok2')+L(Bx,By,Ax,By,'seg-bad');
+    s+=L(ox,oy,Bx,By,'seg-acc');
+    s+=Arc(ox,oy,42,0,a)+Arc(ox,oy,60,a,a+b,'fig-arc-s2')+Arc(Ax,Ay,22,90,90+a);
+    s+=T(ox+52*Math.cos(a/2*D2R),oy-52*Math.sin(a/2*D2R)+5,'α','fig-s acc-t');
+    s+=T(ox+72*Math.cos((a+b/2)*D2R)-4,oy-72*Math.sin((a+b/2)*D2R)+5,'β','fig-s acc-t');
+    s+=T(Ax+30*Math.cos((90+a/2)*D2R)-4,Ay-30*Math.sin((90+a/2)*D2R)+4,'α','fig-s acc-t');
+    s+=T((ox+Bx)/2-14,(oy+By)/2,'1','fig-s acc-t');
+    s+=T((ox+Ax)/2+4,(oy+Ay)/2+18,'cos β','fig-xs');
+    s+=T((Ax+Bx)/2-10*Math.cos(a*D2R),(Ay+By)/2+10*Math.sin(a*D2R)+8,'sin β','fig-xs',"end");
+    s+=T(Ax+6,(oy+Ay)/2+4,'cosβ·sinα','fig-xs ok-t');
+    s+=T(Ax+6,(Ay+By)/2+4,'sinβ·cosα','fig-xs ok2-t');
+    s+=T((Ax+Bx)/2,By-7,'sinβ·sinα','fig-xs bad-t','middle');
+    s+=T((ox+Ax)/2,oy+17,'cosβ·cosα','fig-xs','middle');
+    s+=Dot(ox,oy)+Dot(Ax,Ay)+Dot(Bx,By);
+    s+=T(ox-6,oy+18,'O')+T(Ax+6,Ay+16,'A')+T(Bx-9,By+5,'B','fig-s','end');
+    document.getElementById('saSvg').innerHTML=s;
+    var sa=Math.sin(a*D2R),ca=Math.cos(a*D2R),sb=Math.sin(b*D2R),cb=Math.cos(b*D2R);
+    document.getElementById('saInfo').innerHTML=
+      '<div class="row"><span class="k">B 的高度</span><b>sin('+(a+b)+'°) = '+r3(Math.sin((a+b)*D2R))+'</b></div>'+
+      '<div class="row"><span class="k">兩段相加</span><b>綠 '+r3(cb*sa)+' ＋ 橘 '+r3(sb*ca)+' = '+r3(cb*sa+sb*ca)+' ✔</b></div>'+
+      '<div class="row"><span class="k">B 的水平距離</span><b>cos('+(a+b)+'°) = '+r3(Math.cos((a+b)*D2R))+'</b></div>'+
+      '<div class="row"><span class="k">走過去再退回</span><b>'+r3(cb*ca)+' − 紅 '+r3(sb*sa)+' = '+r3(cb*ca-sb*sa)+' ✔</b></div>'+
+      '<div class="row"><span class="k">對照：錯誤寫法</span><b>sin'+a+'° + sin'+b+'° = '+r3(sa+sb)+' ≠ '+r3(Math.sin((a+b)*D2R))+'</b></div>';
+  });
+
+  // ---- 和差化積 ----
+  wire(['spA','spB'],function(){
+    var A=+document.getElementById('spA').value,B=+document.getElementById('spB').value;
+    document.getElementById('spAv').textContent=A+'°';document.getElementById('spBv').textContent=B+'°';
+    var R=150,cx=160,cy=190,mx=function(x){return cx+R*x},my=function(y){return cy-R*y};
+    var P=[Math.cos(A*D2R),Math.sin(A*D2R)],Q=[Math.cos(B*D2R),Math.sin(B*D2R)];
+    var M=[(P[0]+Q[0])/2,(P[1]+Q[1])/2],mid=(A+B)/2,half=(A-B)/2;
+    var s='';
+    s+=L(4,cy,316,cy,'fig-line')+L(cx,cy,cx,30,'fig-dash');
+    s+='<path d="M'+(cx-R)+','+cy+' A'+R+','+R+' 0 0 1 '+(cx+R)+','+cy+'" class="fig-line"/>';
+    s+=L(cx,cy,mx(P[0]),my(P[1]),'fig-thin')+L(cx,cy,mx(Q[0]),my(Q[1]),'fig-thin');
+    s+=L(cx,cy,mx(Math.cos(mid*D2R)),my(Math.sin(mid*D2R)),'fig-dash');
+    s+=L(mx(P[0]),my(P[1]),mx(Q[0]),my(Q[1]),'fig-line');
+    s+=L(mx(M[0]),my(M[1]),mx(M[0]),cy,'seg-ok');
+    s+=L(cx,cy,mx(M[0]),my(M[1]),'seg-acc');
+    if(Math.abs(half)>=4)s+=Arc(cx,cy,34,Math.min(mid,A),Math.max(mid,A));
+    s+=Dot(mx(P[0]),my(P[1]))+Dot(mx(Q[0]),my(Q[1]))+Dot(mx(M[0]),my(M[1]),'fig-ok');
+    var lab=function(p,txt){var x=mx(p[0]),y=my(p[1]);if(p[0]>0.45)return T(x-4,y+24,txt,'fig-s','end');if(p[0]<-0.45)return T(x+4,y+24,txt,'fig-s','start');return T(x+(p[0]>=0?8:-8),y-8,txt,'fig-s',p[0]>=0?'start':'end')};
+    s+=lab(P,'P（角 A）')+lab(Q,'Q（角 B）');
+    s+=T(mx(M[0])+(M[0]>=0?8:-8),my(M[1])+16,'M','fig-s ok-t',M[0]>=0?'start':'end');
+    var lx=(cx+mx(M[0]))/2,ly=(cy+my(M[1]))/2;
+    s+=T(lx+(M[0]>=0?-6:6),ly,'cos((A−B)/2)','fig-xs acc-t',M[0]>=0?'end':'start');
+    s+=T(cx,cy+16,'O','fig-s','middle');
+    document.getElementById('spSvg').innerHTML=s;
+    var sA=Math.sin(A*D2R),sB=Math.sin(B*D2R),cA=Math.cos(A*D2R),cB=Math.cos(B*D2R);
+    var cm=Math.cos(half*D2R);
+    document.getElementById('spInfo').innerHTML=
+      '<div class="row"><span class="k">平均角、半差角</span><b>(A+B)/2 = '+mid+'°，(A−B)/2 = '+half+'°</b></div>'+
+      '<div class="row"><span class="k">OM 長度</span><b>cos('+half+'°) = '+r3(cm)+'</b></div>'+
+      '<div class="row"><span class="k">sinA + sinB</span><b>'+r3(sA+sB)+'　＝　2·sin('+mid+'°)·cos('+half+'°) = '+r3(2*Math.sin(mid*D2R)*cm)+' ✔</b></div>'+
+      '<div class="row"><span class="k">cosA + cosB</span><b>'+r3(cA+cB)+'　＝　2·cos('+mid+'°)·cos('+half+'°) = '+r3(2*Math.cos(mid*D2R)*cm)+' ✔</b></div>'+
+      '<div class="row"><span class="k">綠線（M 的高度）</span><b>(sinA + sinB)/2 = '+r3((sA+sB)/2)+'</b></div>';
+  });
+
+  // ---- 算幾不等式 ----
+  wire(['amA','amB'],function(){
+    var a=+document.getElementById('amA').value,b=+document.getElementById('amB').value;
+    document.getElementById('amAv').textContent=a;document.getElementById('amBv').textContent=b;
+    var by=190,x0=20,W=300,s0=W/(a+b),cx=x0+W/2,R=W/2;
+    var Dx=x0+a*s0,h=Math.sqrt(a*b)*s0,Ey=by-h;
+    var s='';
+    s+=L(x0,by,x0+W,by,'fig-line');
+    s+='<path d="M'+x0+','+by+' A'+R+','+R+' 0 0 1 '+(x0+W)+','+by+'" class="fig-line"/>';
+    s+=L(x0,by,Dx,Ey,'fig-thin')+L(x0+W,by,Dx,Ey,'fig-thin');
+    s+=L(cx,by,cx,by-R,'seg-acc');
+    s+=L(Dx,by,Dx,Ey,'seg-ok');
+    s+=Dot(cx,by)+Dot(Dx,Ey,'fig-ok');
+    var right=Dx>=cx;
+    s+=T(cx+(right?-6:6),by-R/2,'(a+b)/2 = '+((a+b)/2),'fig-xs acc-t',right?'end':'start');
+    s+=T(Dx+(right?6:-6),(by+Ey)/2+16,'√ab = '+r3(Math.sqrt(a*b)).replace(/\.?0+$/,''),'fig-xs ok-t',right?'start':'end');
+    s+=T((x0+Dx)/2,by+16,'a','fig-s','middle')+T((Dx+x0+W)/2,by+16,'b','fig-s','middle');
+    document.getElementById('amSvg').innerHTML=s;
+    var am=(a+b)/2,gm=Math.sqrt(a*b);
+    document.getElementById('amInfo').innerHTML=
+      '<div class="row"><span class="k">算術平均（半徑）</span><b>('+a+' + '+b+')/2 = '+am+'</b></div>'+
+      '<div class="row"><span class="k">幾何平均（綠線）</span><b>√('+a+' × '+b+') = '+r3(gm)+'</b></div>'+
+      '<div class="verdict-box">'+(Math.abs(a-b)<1e-9?'a = b，綠線剛好就是半徑：算術平均 = 幾何平均（等號成立）':'a ≠ b，綠線比半徑短：算術平均 > 幾何平均')+'</div>';
+  });
 
   /* ===== KaTeX ===== */
   function renderMath(){

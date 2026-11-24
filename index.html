@@ -34,7 +34,8 @@
 
 <!-- ================================================================
      每個日期一個 <section class="day" data-date="MMDD" data-title="...">
-     新增日期時，複製一整個 section 改內容即可，分頁會自動產生。
+     新增日期時，複製一整個 section 改內容即可，日期分頁和題目列表會自動產生。
+     每題的 data-group 是主題：相鄰且同主題的題目會在列表中排成同一個色塊。
      ================================================================ -->
 
 <section class="day" data-date="1123" data-title="11/23 機率・空間・立體">
@@ -50,7 +51,7 @@
   <div class="q-tabs" role="tablist" aria-label="題目"></div>
 
   <!-- ---------------- Q1 ---------------- -->
-  <article class="q" data-q="Q1 機器人棋盤">
+  <article class="q" data-q="Q1 機器人棋盤" data-group="機率">
     <div class="card">
       <div class="q-meta"><span class="tag">多重選擇題</span><span class="tag">113 學測 B</span><span class="tag">機率・樹狀圖</span></div>
       <h3>機器人在 2×2 棋盤移動</h3>
@@ -190,7 +191,7 @@
   </article>
 
   <!-- ---------------- Q2 ---------------- -->
-  <article class="q" data-q="Q2 停車場">
+  <article class="q" data-q="Q2 停車場" data-group="機率">
     <div class="card">
       <div class="q-meta"><span class="tag">填充題</span><span class="tag">114 學測 B</span><span class="tag">獨立事件・餘事件</span></div>
       <h3>兩個停車場至少一個有空位</h3>
@@ -224,7 +225,7 @@
   </article>
 
   <!-- ---------------- Q3 ---------------- -->
-  <article class="q" data-q="Q3 地球儀劣弧">
+  <article class="q" data-q="Q3 地球儀劣弧" data-group="空間坐標">
     <div class="card">
       <div class="q-meta"><span class="tag">填充題</span><span class="tag">113 學測 B</span><span class="tag">空間坐標・球面距離</span></div>
       <h3>地球儀上的大圓劣弧長</h3>
@@ -284,7 +285,7 @@
   </article>
 
   <!-- ---------------- Q4 ---------------- -->
-  <article class="q" data-q="Q4 石塊截角">
+  <article class="q" data-q="Q4 石塊截角" data-group="立體幾何">
     <div class="card">
       <div class="q-meta"><span class="tag">混合題</span><span class="tag">113 學測 B</span><span class="tag">立體幾何・四面體體積</span></div>
       <h3>長方體石塊截去八個角</h3>
@@ -358,19 +359,19 @@
   </article>
 </section>
 
-<section class="day" data-date="1124" data-title="11/24 反曲點・三次函數">
+<section class="day" data-date="1124" data-title="11/24 三次函數・三角・算幾">
   <div class="day-head">
-    <h2>11/24 主題：用 $f'(x)$ 看穿三次函數的長相</h2>
-    <p class="muted">學測偶爾會考三次函數：先求一次導函數 $f'(x)$，看 $f'(x)=0$ 有沒有實根，就能反推 $f(x)$ 的圖形長什麼樣。第一次看請先點「🥾 先看這裡」，用走山路的方式看懂，再往後看例題和練習。</p>
+    <h2>11/24 主題：三次函數、三角公式、算幾不等式</h2>
+    <p class="muted">三個主題：三次函數（第 1–8 題）、三角公式（第 9–10 題）、算幾不等式（第 11 題）。三次函數請從第 1 題「先看這裡」開始。</p>
     <div class="chips">
-      <span class="chip">三次函數</span><span class="chip">導函數</span><span class="chip">判別式</span><span class="chip">反曲點</span><span class="chip">極大・極小</span>
+      <span class="chip">三次函數</span><span class="chip">導函數</span><span class="chip">判別式</span><span class="chip">反曲點</span><span class="chip">極大・極小</span><span class="chip">和角公式</span><span class="chip">和差化積</span><span class="chip">算幾不等式</span>
     </div>
   </div>
 
   <div class="q-tabs" role="tablist" aria-label="題目"></div>
 
   <!-- ---------------- 先看這裡 ---------------- -->
-  <article class="q" data-q="🥾 先看這裡">
+  <article class="q" data-q="🥾 先看這裡" data-group="三次函數">
     <div class="card">
       <div class="q-meta"><span class="tag">白話版</span><span class="tag">先看這裡</span></div>
       <h3>把三次函數的圖形，想成一條山路</h3>
@@ -462,7 +463,7 @@
   </article>
 
   <!-- ---------------- 觀念① ---------------- -->
-  <article class="q" data-q="觀念① 三種長相">
+  <article class="q" data-q="觀念① 三種長相" data-group="三次函數">
     <div class="card">
       <div class="q-meta"><span class="tag">觀念</span><span class="tag">導函數＝斜率</span></div>
       <h3>$f'(x)$ 是「坡度」：正的是上坡、負的是下坡</h3>
@@ -520,7 +521,7 @@
   </article>
 
   <!-- ---------------- 互動 ---------------- -->
-  <article class="q" data-q="🧪 互動圖形">
+  <article class="q" data-q="🧪 互動圖形" data-group="三次函數">
     <div class="card">
       <div class="q-meta"><span class="tag">互動</span><span class="tag">拖拉係數</span></div>
       <h3>拉拉看：係數怎麼改變三次函數的長相</h3>
@@ -544,7 +545,7 @@
   </article>
 
   <!-- ---------------- 觀念② ---------------- -->
-  <article class="q" data-q="觀念② 反曲點">
+  <article class="q" data-q="觀念② 反曲點" data-group="三次函數">
     <div class="card">
       <div class="q-meta"><span class="tag">觀念</span><span class="tag">反曲點＝對稱中心</span></div>
       <h3>反曲點：曲線「彎的方向」改變的地方</h3>
@@ -585,7 +586,7 @@
   </article>
 
   <!-- ---------------- 例1 ---------------- -->
-  <article class="q" data-q="例1 求極值與反曲點">
+  <article class="q" data-q="例1 求極值與反曲點" data-group="三次函數">
     <div class="card">
       <div class="q-meta"><span class="tag">例題</span><span class="tag">基本題</span></div>
       <h3>例 1　$f(x)=x^3-6x^2+9x+1$</h3>
@@ -632,7 +633,7 @@
   </article>
 
   <!-- ---------------- 例2 ---------------- -->
-  <article class="q" data-q="例2 遞增求範圍">
+  <article class="q" data-q="例2 遞增求範圍" data-group="三次函數">
     <div class="card">
       <div class="q-meta"><span class="tag">例題</span><span class="tag">反推參數</span></div>
       <h3>例 2　$f(x)=x^3+kx^2+3x+1$ 在整條實數線上都是遞增函數，求 $k$ 的範圍。</h3>
@@ -657,7 +658,7 @@
   </article>
 
   <!-- ---------------- 例3 ---------------- -->
-  <article class="q" data-q="例3 三相異實根">
+  <article class="q" data-q="例3 三相異實根" data-group="三次函數">
     <div class="card">
       <div class="q-meta"><span class="tag">例題</span><span class="tag">極值＋圖形交點</span></div>
       <h3>例 3　方程式 $x^3-3x+k=0$ 有三個相異實根，求 $k$ 的範圍。</h3>
@@ -706,7 +707,7 @@
   </article>
 
   <!-- ---------------- 練習 ---------------- -->
-  <article class="q" data-q="✏️ 練習">
+  <article class="q" data-q="✏️ 三次練習" data-group="三次函數">
     <div class="card">
       <div class="q-meta"><span class="tag">練習</span><span class="tag">自我檢測</span></div>
       <h3>小試身手（先自己算，再打開答案）</h3>
@@ -733,6 +734,201 @@
 
     <div class="tip"><b>本日重點回顧</b>：① $f'(x)=3ax^2+2bx+c$ 是斜率；② 看 $b^2-3ac$：$>0$ 兩個彎、$\le0$ 單調；③ 反曲點 $x=-\frac{b}{3a}$，是對稱中心，也是兩極值點的中點；④ 三相異實根要「兩個彎」加上「極大 × 極小 &lt; 0」。</div>
   </article>
+  <!-- ---------------- 和角公式 ---------------- -->
+  <article class="q" data-q="📐 和角公式" data-group="三角公式">
+    <div class="card">
+      <div class="q-meta"><span class="tag">三角函數</span><span class="tag">圖解</span><span class="tag">和角公式</span></div>
+      <h3>和角公式：把兩個直角三角形疊起來</h3>
+      <p>先記住結論，等一下用一張圖看懂它從哪裡來：</p>
+      <p class="eq">$\sin(\alpha+\beta)=\sin\alpha\cos\beta+\cos\alpha\sin\beta$</p>
+      <p class="eq">$\cos(\alpha+\beta)=\cos\alpha\cos\beta-\sin\alpha\sin\beta$</p>
+      <p class="muted small">常見錯誤：以為 $\sin(\alpha+\beta)=\sin\alpha+\sin\beta$。拉下面的拉桿試試看，兩邊根本不相等。</p>
+    </div>
+
+    <div class="card">
+      <h3>圖解（可以拉動角度）</h3>
+      <div class="cubic-ctl">
+        <label>$\alpha$ <input type="range" id="saA" min="5" max="50" step="1" value="25"><b id="saAv"></b></label>
+        <label>$\beta$ <input type="range" id="saB" min="5" max="40" step="1" value="35"><b id="saBv"></b></label>
+      </div>
+      <div class="body-fig"><svg class="fig big" id="saSvg" viewBox="0 0 340 300" aria-label="和角公式圖解"></svg></div>
+      <p class="muted small">圖例：<b class="ok-c">綠線</b>＋<b class="ok2-c">橘線</b>＝$B$ 的高度；<b class="bad-c">紅線</b>是要往回退的距離。</p>
+      <div class="cb-info" id="saInfo"></div>
+    </div>
+
+    <details class="step"><summary>📘 看圖說故事：一步一步讀這張圖</summary>
+      <h4>Step 1　擺兩個直角三角形</h4>
+      <ul>
+        <li>最粗的那條線 $\overline{OB}$ 長度是 <b>1</b>，和地面的夾角是 $\alpha+\beta$。</li>
+        <li>在它下面墊一個直角三角形 $OAB$：$\angle AOB=\beta$，直角在 $A$。所以 $\overline{OA}=\cos\beta$、$\overline{AB}=\sin\beta$。</li>
+        <li>$\overline{OA}$ 和地面的夾角是 $\alpha$。</li>
+      </ul>
+      <h4>Step 2　$B$ 的高度＝兩段高度相加</h4>
+      <p>$B$ 的高度就是 $\sin(\alpha+\beta)$（斜邊 1 乘上 sin）。從圖上看，它分成兩段：</p>
+      <ul>
+        <li>下段：$A$ 的高度 $=\overline{OA}\cdot\sin\alpha=\cos\beta\sin\alpha$</li>
+        <li>上段：從 $A$ 爬到 $B$ 的高度 $=\overline{AB}\cdot\cos\alpha=\sin\beta\cos\alpha$</li>
+      </ul>
+      <p class="muted small">為什麼上段用 $\cos\alpha$？因為 $\overline{AB}\perp\overline{OA}$，$\overline{OA}$ 往上斜了 $\alpha$，$\overline{AB}$ 和「垂直線」的夾角也剛好是 $\alpha$（圖中 $A$ 點的小角）。</p>
+      <p class="eq">$\sin(\alpha+\beta)=\cos\beta\sin\alpha+\sin\beta\cos\alpha$ ✔</p>
+      <h4>Step 3　$B$ 的水平距離＝往右走、再往回走</h4>
+      <p>$B$ 的水平位置是 $\cos(\alpha+\beta)$。從 $O$ 先走到 $A$ 的正下方（$\cos\beta\cos\alpha$），再<b>往左退回</b> $\sin\beta\sin\alpha$：</p>
+      <p class="eq">$\cos(\alpha+\beta)=\cos\beta\cos\alpha-\sin\beta\sin\alpha$ ✔</p>
+      <p>cos 公式中間是<strong>減號</strong>，就是因為要「退回去」。</p>
+    </details>
+
+    <details class="step"><summary>📘 延伸：差角、二倍角都是它變出來的</summary>
+      <p><b>差角</b>：把 $\beta$ 換成 $-\beta$，用 $\sin(-\beta)=-\sin\beta$、$\cos(-\beta)=\cos\beta$：</p>
+      <p class="eq">$\sin(\alpha-\beta)=\sin\alpha\cos\beta-\cos\alpha\sin\beta,\qquad\cos(\alpha-\beta)=\cos\alpha\cos\beta+\sin\alpha\sin\beta$</p>
+      <p><b>二倍角</b>：令 $\beta=\alpha$：</p>
+      <p class="eq">$\sin2\alpha=2\sin\alpha\cos\alpha,\qquad\cos2\alpha=\cos^2\alpha-\sin^2\alpha=2\cos^2\alpha-1=1-2\sin^2\alpha$</p>
+      <h4>小練習：求 $\sin75^\circ$</h4>
+      <p class="eq">$\sin75^\circ=\sin(45^\circ+30^\circ)=\dfrac{\sqrt2}{2}\cdot\dfrac{\sqrt3}{2}+\dfrac{\sqrt2}{2}\cdot\dfrac12=\dfrac{\sqrt6+\sqrt2}{4}$</p>
+    </details>
+
+    <div class="tip"><b>口訣</b>：sin 和角是「<strong>sin cos ＋ cos sin</strong>」（混在一起，符號相同）；cos 和角是「<strong>cos cos － sin sin</strong>」（同類放一起，符號相反）。忘記時畫這張「疊三角形」的圖就推得回來。</div>
+  </article>
+
+  <!-- ---------------- 和差化積 ---------------- -->
+  <article class="q" data-q="📐 和差化積" data-group="三角公式">
+    <div class="card">
+      <div class="q-meta"><span class="tag">三角函數</span><span class="tag">圖解</span><span class="tag">和差化積</span></div>
+      <h3>和差化積：單位圓上兩個點的「中點」</h3>
+      <p>「和差化積」就是把<b>兩個三角函數相加</b>，變成<b>兩個三角函數相乘</b>：</p>
+      <p class="eq">$\sin A+\sin B=2\sin\dfrac{A+B}{2}\cos\dfrac{A-B}{2},\qquad\cos A+\cos B=2\cos\dfrac{A+B}{2}\cos\dfrac{A-B}{2}$</p>
+      <p>看起來很可怕，其實只是在說<strong>一件很直覺的事</strong>，看下面的圖。</p>
+    </div>
+
+    <div class="card">
+      <h3>圖解（可以拉動角度）</h3>
+      <div class="cubic-ctl">
+        <label>$A$ <input type="range" id="spA" min="0" max="180" step="1" value="110"><b id="spAv"></b></label>
+        <label>$B$ <input type="range" id="spB" min="0" max="180" step="1" value="30"><b id="spBv"></b></label>
+      </div>
+      <div class="body-fig"><svg class="fig big" id="spSvg" viewBox="0 0 320 210" aria-label="和差化積圖解"></svg></div>
+      <div class="cb-info" id="spInfo"></div>
+    </div>
+
+    <details class="step"><summary>📘 看圖說故事：一步一步讀這張圖</summary>
+      <h4>Step 1　單位圓上兩個點</h4>
+      <p>$P=(\cos A,\sin A)$、$Q=(\cos B,\sin B)$，都在半徑 1 的圓上。</p>
+      <h4>Step 2　中點 $M$ 的坐標，就是「和」的一半</h4>
+      <p class="eq">$M=\left(\dfrac{\cos A+\cos B}{2},\ \dfrac{\sin A+\sin B}{2}\right)$</p>
+      <h4>Step 3　換個角度看 $M$：它在哪個方向、離圓心多遠？</h4>
+      <ul>
+        <li><b>方向</b>：$OP$、$OQ$ 一樣長，所以 $M$ 剛好在兩者的<strong>角平分線</strong>上，角度是 $\dfrac{A+B}{2}$。</li>
+        <li><b>距離</b>：$\angle POM$ 是兩角差的一半 $\dfrac{A-B}{2}$，而 $OM\perp PQ$，所以 $\overline{OM}=1\cdot\cos\dfrac{A-B}{2}$。</li>
+      </ul>
+      <p>所以用「距離 × 方向」再寫一次 $M$：</p>
+      <p class="eq">$M=\cos\dfrac{A-B}{2}\cdot\left(\cos\dfrac{A+B}{2},\ \sin\dfrac{A+B}{2}\right)$</p>
+      <h4>Step 4　兩種寫法一比，公式就出來了</h4>
+      <p class="eq">$\dfrac{\sin A+\sin B}{2}=\cos\dfrac{A-B}{2}\sin\dfrac{A+B}{2}\ \Rightarrow\ \sin A+\sin B=2\sin\dfrac{A+B}{2}\cos\dfrac{A-B}{2}$</p>
+      <p class="eq">$\dfrac{\cos A+\cos B}{2}=\cos\dfrac{A-B}{2}\cos\dfrac{A+B}{2}\ \Rightarrow\ \cos A+\cos B=2\cos\dfrac{A+B}{2}\cos\dfrac{A-B}{2}$</p>
+      <p><b>一句話</b>：兩點的中點＝「往平均角度的方向，走 $\cos(\text{半差})$ 那麼遠」。</p>
+    </details>
+
+    <details class="step"><summary>📘 不用圖也行：用和角公式兩行推出來</summary>
+      <p>令 $x=\dfrac{A+B}{2}$、$y=\dfrac{A-B}{2}$，那麼 $A=x+y$、$B=x-y$：</p>
+      <p class="eq">$\sin(x+y)+\sin(x-y)=(\sin x\cos y+\cos x\sin y)+(\sin x\cos y-\cos x\sin y)=2\sin x\cos y$</p>
+      <p>中間那兩項正負抵消，剩下 $2\sin x\cos y$，就是 $2\sin\frac{A+B}{2}\cos\frac{A-B}{2}$。<strong>所以和差化積不用死背，會和角公式就推得出來。</strong></p>
+      <h4>四個公式整理</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>和差</th><th>化成積</th></tr></thead>
+        <tbody>
+          <tr><td>$\sin A+\sin B$</td><td>$2\sin\frac{A+B}{2}\cos\frac{A-B}{2}$</td></tr>
+          <tr><td>$\sin A-\sin B$</td><td>$2\cos\frac{A+B}{2}\sin\frac{A-B}{2}$</td></tr>
+          <tr><td>$\cos A+\cos B$</td><td>$2\cos\frac{A+B}{2}\cos\frac{A-B}{2}$</td></tr>
+          <tr><td>$\cos A-\cos B$</td><td>$-2\sin\frac{A+B}{2}\sin\frac{A-B}{2}$</td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted small">「差」的兩條，在圖上就是向量 $\overrightarrow{QP}$：長度 $2\sin\frac{A-B}{2}$，方向和 $OM$ 垂直。反過來讀（積 → 和差）就是「積化和差」。</p>
+      <h4>小練習：求 $\sin75^\circ+\sin15^\circ$</h4>
+      <p class="eq">$=2\sin45^\circ\cos30^\circ=2\cdot\dfrac{\sqrt2}{2}\cdot\dfrac{\sqrt3}{2}=\dfrac{\sqrt6}{2}$</p>
+    </details>
+
+    <div class="tip"><b>記憶法</b>：右邊永遠是「<strong>2 × (平均角) × (半差角)</strong>」。sin＋sin 是 sin·cos，cos＋cos 是 cos·cos。最穩的做法是記住圖：<strong>中點在平均角方向，離圓心 $\cos(\text{半差})$</strong>。和差化積在學測不一定直接考，各校教學的重點也不同，但這個推導方法很值得會。</div>
+  </article>
+
+  <!-- ---------------- 算幾不等式 ---------------- -->
+  <article class="q" data-q="⚖️ 算幾不等式" data-group="算幾不等式">
+    <div class="card">
+      <div class="q-meta"><span class="tag">不等式</span><span class="tag">圖解</span><span class="tag">最大最小值</span></div>
+      <h3>算術平均數 ≥ 幾何平均數</h3>
+      <p>對於兩個<strong>正數</strong> $a$、$b$：</p>
+      <p class="eq">$\dfrac{a+b}{2}\ \ge\ \sqrt{ab}$，等號成立 ⇔ $a=b$</p>
+      <ul>
+        <li>左邊 $\dfrac{a+b}{2}$ 叫<b>算術平均數</b>（就是平常說的平均）。</li>
+        <li>右邊 $\sqrt{ab}$ 叫<b>幾何平均數</b>：面積 $ab$ 的長方形，換成一樣大的正方形，邊長就是 $\sqrt{ab}$。</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>圖解一：半圓裡的「半徑」和「高」（可以拉動）</h3>
+      <div class="cubic-ctl">
+        <label>$a$ <input type="range" id="amA" min="0.5" max="9" step="0.5" value="7"><b id="amAv"></b></label>
+        <label>$b$ <input type="range" id="amB" min="0.5" max="9" step="0.5" value="2"><b id="amBv"></b></label>
+      </div>
+      <div class="body-fig"><svg class="fig big" id="amSvg" viewBox="0 0 340 210" aria-label="算幾不等式半圓圖解"></svg></div>
+      <div class="cb-info" id="amInfo"></div>
+      <h4>怎麼讀這張圖</h4>
+      <ul>
+        <li>直徑長 $a+b$，所以<b>半徑</b>（中間直立的粗線）$=\dfrac{a+b}{2}$，就是算術平均。</li>
+        <li>在直徑上分成 $a$、$b$ 的地方往上畫到圓，這條<b>高</b>（綠色）剛好是 $\sqrt{ab}$。</li>
+        <li><b>半徑是圓裡最高的高</b>，綠線不可能比藍線高，所以 $\dfrac{a+b}{2}\ge\sqrt{ab}$。</li>
+        <li>只有分在<b>正中間</b>（$a=b$）時，綠線才剛好就是半徑，等號成立。</li>
+      </ul>
+      <details class="step"><summary>🤔 為什麼那條高是 $\sqrt{ab}$？</summary>
+        <p>直徑兩端連到圓上那一點，形成的角是<b>直角</b>（半圓上的圓周角是 $90^\circ$）。這個大直角三角形被高切成兩個小三角形，三個三角形<b>相似</b>，所以</p>
+        <p class="eq">$\dfrac{h}{a}=\dfrac{b}{h}\ \Rightarrow\ h^2=ab\ \Rightarrow\ h=\sqrt{ab}$</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>圖解二：拼正方形</h3>
+      <div class="body-fig">
+        <svg class="fig" viewBox="0 0 230 230" style="max-width:240px" aria-label="四個長方形拼成大正方形">
+          <rect x="25" y="25" width="120" height="60" class="sq-r"/>
+          <rect x="145" y="25" width="60" height="120" class="sq-r"/>
+          <rect x="85" y="145" width="120" height="60" class="sq-r"/>
+          <rect x="25" y="85" width="60" height="120" class="sq-r"/>
+          <rect x="85" y="85" width="60" height="60" class="sq-hole"/>
+          <text x="85" y="60" class="fig-s" text-anchor="middle">ab</text>
+          <text x="175" y="90" class="fig-s" text-anchor="middle">ab</text>
+          <text x="145" y="180" class="fig-s" text-anchor="middle">ab</text>
+          <text x="55" y="150" class="fig-s" text-anchor="middle">ab</text>
+          <text x="115" y="120" class="fig-s bad-t" text-anchor="middle">(a−b)²</text>
+          <text x="85" y="18" class="fig-s muted-t" text-anchor="middle">a</text>
+          <text x="175" y="18" class="fig-s muted-t" text-anchor="middle">b</text>
+        </svg>
+      </div>
+      <p>四個 $a\times b$ 的長方形轉一圈，拼成邊長 $a+b$ 的大正方形，中間會<b>空出一個小正方形</b>，邊長 $a-b$。所以：</p>
+      <p class="eq">$(a+b)^2=4ab+(a-b)^2\ \ge\ 4ab$</p>
+      <p>兩邊開根號再除以 2，就是 $\dfrac{a+b}{2}\ge\sqrt{ab}$。中間的洞<b>消失</b>（$a=b$）時，等號成立。</p>
+    </div>
+
+    <details class="step"><summary>📘 例 1　$x>0$，求 $x+\dfrac{9}{x}$ 的最小值</summary>
+      <p>$x$ 和 $\dfrac9x$ 都是正數，而且<b>相乘是定值</b> $x\cdot\frac9x=9$。用算幾：</p>
+      <p class="eq">$\dfrac{x+\frac9x}{2}\ge\sqrt{x\cdot\dfrac9x}=3\ \Rightarrow\ x+\dfrac9x\ge6$</p>
+      <p>等號在 $x=\dfrac9x$，也就是 $x=3$ 時成立。</p>
+      <div class="answer">最小值 6（在 $x=3$）</div>
+    </details>
+
+    <details class="step"><summary>📘 例 2　用 20 公尺的籬笆圍一個長方形，面積最大是多少？</summary>
+      <p>設長 $a$、寬 $b$，$2(a+b)=20$，所以 $a+b=10$（<b>相加是定值</b>）。</p>
+      <p class="eq">$\sqrt{ab}\le\dfrac{a+b}{2}=5\ \Rightarrow\ ab\le25$</p>
+      <p>等號在 $a=b=5$，也就是<b>圍成正方形</b>時面積最大。</p>
+      <div class="answer">最大面積 25 平方公尺（$5\times5$ 正方形）</div>
+    </details>
+
+    <details class="step"><summary>⚠️ 陷阱題　$x\ge2$，求 $x+\dfrac1x$ 的最小值</summary>
+      <p>直接套算幾：$x+\dfrac1x\ge2$，等號要 $x=1$。<b>但 $x\ge2$，$x=1$ 不在範圍內！</b>所以最小值<b>不是 2</b>。</p>
+      <p>在 $x\ge2$ 時，$x$ 越大 $x+\frac1x$ 越大，最小值在 $x=2$：$2+\dfrac12=\dfrac52$。</p>
+      <div class="answer">最小值 $\dfrac52$（不是 2）</div>
+    </details>
+
+    <div class="tip"><b>使用三條件：一正、二定、三相等</b>。① 兩個數都要是<strong>正數</strong>；② 「和」或「積」其中一個是<strong>定值</strong>（積固定求和的最小值，和固定求積的最大值）；③ 檢查<strong>等號真的取得到</strong>，不然答案會錯。</div>
+  </article>
+
 </section>
 
 </main>

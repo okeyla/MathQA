@@ -208,3 +208,59 @@ table.paths td:nth-child(2){text-align:left}
 .fig-ok{fill:var(--ok)}
 .fig-miss{fill:var(--miss)}
 .miss-t{fill:var(--miss)}
+
+/* ===== 11/24 三角・算幾圖解 ===== */
+.fig.big{max-width:440px}
+.tri1{fill:var(--accent-soft)}
+.tri2{fill:var(--miss-bg)}
+.seg-acc{stroke:var(--accent);stroke-width:4;stroke-linecap:round}
+.seg-ok{stroke:var(--ok);stroke-width:4;stroke-linecap:round}
+.seg-ok2{stroke:var(--miss);stroke-width:4;stroke-linecap:round}
+.seg-bad{stroke:var(--bad);stroke-width:4;stroke-linecap:round}
+.fig-thin{stroke:var(--muted);stroke-width:1.2}
+.fig-arc-s{stroke:var(--accent);stroke-width:1.5;fill:none}
+.fig-arc-s2{stroke:var(--accent);stroke-width:1.5;fill:none;stroke-dasharray:3 2}
+.fig-xs{fill:var(--text);font-size:12px;font-weight:700}
+.ok-t{fill:var(--ok)}
+.ok2-t{fill:var(--miss)}
+.ok-c{color:var(--ok)}
+.ok2-c{color:var(--miss)}
+.bad-c{color:var(--bad)}
+.sq-r{fill:var(--accent-soft);stroke:var(--text);stroke-width:1.5}
+.sq-hole{fill:var(--bad-bg);stroke:var(--bad);stroke-width:1.5}
+
+/* ===== 題目列表＋題目導覽 ===== */
+.q-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.q-groups[hidden],.q-nav[hidden],.day-head[hidden]{display:none}
+.q-list a{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;box-shadow:var(--shadow);color:var(--text);text-decoration:none;transition:border-color .15s}
+.q-list a:hover,.q-list a:focus-visible{border-color:var(--accent)}
+.q-no{flex:none;width:36px;height:36px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center;font-weight:var(--fw-strong)}
+.q-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.q-name{font-weight:var(--fw-strong);font-size:1.05em}
+.q-sub{color:var(--muted);font-size:.9em;line-height:1.5}
+.q-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.q-go{flex:none;color:var(--muted);font-size:1.6em;line-height:1}
+.q-nav{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:16px 0}
+.q-nav button{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:8px;padding:6px 14px;cursor:pointer;font-weight:var(--fw)}
+.q-nav button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.q-nav button:disabled{opacity:.4;cursor:default}
+.q-nav .nav-back{background:var(--accent);color:var(--accent-text);border-color:var(--accent);font-weight:var(--fw-strong)}
+.q-nav .nav-back:hover{color:var(--accent-text)}
+.q-nav .nav-pos{color:var(--muted);font-size:.9em;margin-right:auto}
+.q-nav .toggle-all{border-color:var(--accent);color:var(--accent);font-weight:var(--fw-strong)}
+.q-nav .toggle-all[hidden]{display:none}
+
+/* ===== 題目列表：主題色塊（同色系深淺） ===== */
+.q-groups{display:grid;gap:14px;margin:16px 0 28px}
+.q-group{--tint:color-mix(in srgb,var(--accent) var(--mix),var(--bg));--edge-c:color-mix(in srgb,var(--accent) var(--edge),var(--bg));
+  background:var(--tint);border-radius:14px;padding:12px;border-left:6px solid var(--edge-c)}
+.q-group-h{display:flex;align-items:baseline;gap:10px;margin:0 4px 10px}
+.q-group-name{font-weight:var(--fw-strong);color:var(--accent);font-size:1.05em}
+.q-group-range{color:var(--muted);font-size:.85em}
+.q-group .q-list a{border-left:4px solid var(--edge-c)}
+.q-group .q-no{background:var(--edge-c);color:var(--text)}
+.q-nav{--tint:color-mix(in srgb,var(--accent) var(--mix,10%),var(--bg));--edge-c:color-mix(in srgb,var(--accent) var(--edge,40%),var(--bg))}
+.q-nav .nav-pos{background:var(--tint);border-left:4px solid var(--edge-c);padding:2px 10px;border-radius:999px;color:var(--text)}
+.q-nav .nav-pos b{color:var(--accent)}
